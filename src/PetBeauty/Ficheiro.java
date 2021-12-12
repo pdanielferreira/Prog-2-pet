@@ -52,14 +52,15 @@ public class Ficheiro {
                         }
                     } while (sc.hasNextLine());
 
-                    /*if (us.equals("ADMIN") && pss.equals("ADMIN")) {
+                    if (us.equals("ADMIN") && pss.equals("ADMIN")) {
                         System.out.println("\n\tADMIN LOGADO COM SUCESSO!");
                         Thread.sleep(1000);
-                        Admin ad = new Admin();
-                        ad.MenuAdmin();
+                        /*Admin ad = new Admin();
+                        ad.MenuAdmin();*/
+                        System.out.println("Entra menu admin");
                         break;
                     }
-
+/*
                     if (flag == 1 && est == 1) {
                         System.out.println("\n\tLOGIN EFETUADO COM SUCESSO!");
                         Thread.sleep(1000);
