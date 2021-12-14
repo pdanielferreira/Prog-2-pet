@@ -9,10 +9,11 @@ public class Utilizador implements InterfaceUser{
     private String nTel;
     private String tipo;
 
-    public Utilizador(String username, String pass, String NIF){
+    public Utilizador(String username, String pass, String NIF, String tipo){
         this.username = username;
         this.password = pass;
         this.NIF = NIF;
+        this.tipo = tipo;
     }
 
     public Utilizador(String username, String password, String nome, String apelido, String NIF, String nTel, String tipo){

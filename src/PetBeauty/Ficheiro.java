@@ -11,6 +11,10 @@ public class Ficheiro {
 
     public void LerLogin() throws FileNotFoundException {
 
+        String textoVermelho = "\033[31m";
+        String textoVerde = "\033[32m";
+        String textoNormal = "\033[0m";
+
         File f = new File("registo.dat");
         Formatter formatter;
         /*
@@ -63,66 +67,51 @@ public class Ficheiro {
                         }
                     } while (sc.hasNextLine());
 
+                    //Direcionamento de Cliente
                     if (flag == 1 && tipo == 0) {
-                        System.out.println("\n\tCLIENTE LOGADO COM SUCESSO!");
+                        System.out.println(textoVerde + "\n\tCLIENTE LOGADO COM SUCESSO!" + textoNormal);
                         Thread.sleep(1000);
-                        System.out.println("Entra menu cliente");
+                        Cliente cl = new Cliente(divLinha[0].trim(), divLinha[1].trim(), divLinha[2].trim(), divLinha[3].trim(), divLinha[4].trim(), divLinha[5].trim(), divLinha[6].trim());
+                        cl.menuCliente();
                         break;
-                    } else if (flag == 1 && tipo == 1) {
-                        System.out.println("\n\tFUNCIONÁRIO LOGADO COM SUCESSO!");
+                    }
+                    //Direcionamento de Funcionário
+                    else if (flag == 1 && tipo == 1) {
+                        System.out.println(textoVerde + "\n\tFUNCIONÁRIO LOGADO COM SUCESSO!" + textoNormal);
                         Thread.sleep(1000);
                         System.out.println("Entra menu funcionário");
                         break;
-                    } else if (flag == 1 && tipo == 2) {
-                        System.out.println("\n\tDONO DE EMPRESA LOGADO COM SUCESSO!");
+                    }
+                    //Direcionamento de Dono de Empresa
+                    else if (flag == 1 && tipo == 2) {
+                        System.out.println(textoVerde + "\n\tDONO DE EMPRESA LOGADO COM SUCESSO!" + textoNormal);
                         Thread.sleep(1000);
                         System.out.println("Entra menu dono de empresa");
                         break;
-                    } else if (flag == 1 && tipo == 3) {
-                        System.out.println("\n\tADMIN LOGADO COM SUCESSO!");
+                    }
+                    //Direcionamento de Admin
+                    else if (flag == 1 && tipo == 3) {
+                        System.out.println(textoVerde + "\n\tADMIN LOGADO COM SUCESSO!" + textoNormal);
                         Thread.sleep(1000);
                         System.out.println("Entra menu admin");
                         break;
                     }
-
-                    /*if (us.equals("ADMIN") && pss.equals("ADMIN")) {
-                        System.out.println("\n\tADMIN LOGADO COM SUCESSO!");
-                        Thread.sleep(1000);
-                        Admin ad = new Admin();
-                        ad.MenuAdmin();
-                        System.out.println("Entra menu admin");
-                        break;
-                    }
-
-                    if (flag == 1 && tipo == 1) {
-                        System.out.println("\n\tLOGIN EFETUADO COM SUCESSO!");
-                        Thread.sleep(1000);
-                        User u = new User(us);
-                        u.menuUser();
-                    } else if (flag == 1 && tipo == 0) {
-                        System.out.println("\n\tLOGIN EFETUADO COM SUCESSO!");
-                        Thread.sleep(1000);
-                        UserManager um = new UserManager(us);
-                        um.menuUserManager();
-                    }*/
-
-
                     /*
                         ERRO: CASO O NÚMERO SEJA ALTERADO MANUALMENTE NO FICHEIRO
                      */
-                    if (tipo != 0 || tipo != 1 || tipo != 2 || tipo != 3) {
-                        System.out.println("\tERRO! CONTACTE O DESENVOLVEDOR.");
+                    if (tipo != 0 && tipo != 1 && tipo != 2 && tipo != 3 && flag != 0) {
+                        System.out.println(textoVermelho + "\tERRO! CONTACTE O DESENVOLVEDOR." + textoNormal);
                     }
                     /*
                         ERRO: CASO O UTILIZADOR/PASSWORD SEJAM ERRADOS
                      */
                     if (flag == 0) {
-                        System.out.println("\tUSERNAME/PASSWORD INVÁLIDOS!");
+                        System.out.println( textoVermelho + "\t USERNAME/PASSWORD INVÁLIDOS! " + textoNormal);
                     }
                 } while (flag == 0);
 
             } catch (Exception e) {
-                System.out.println("Ficheiro não encontrado!");
+                System.out.println( textoVermelho +"Ficheiro não encontrado!"  + textoNormal);
                 System.exit(0);
             }
         }
