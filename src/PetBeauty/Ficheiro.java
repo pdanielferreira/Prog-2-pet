@@ -90,9 +90,17 @@ public class Ficheiro {
                         UserManager um = new UserManager(us);
                         um.menuUserManager();
                     }*/
+
+
+                    /*
+                        ERRO: CASO O NÚMERO SEJA ALTERADO MANUALMENTE NO FICHEIRO
+                     */
                     if (tipo != 0 || tipo != 1 || tipo != 2 || tipo != 3) {
                         System.out.println("\tERRO! CONTACTE O DESENVOLVEDOR.");
                     }
+                    /*
+                        ERRO: CASO O UTILIZADOR/PASSWORD SEJAM ERRADOS
+                     */
                     if (flag == 0) {
                         System.out.println("\tUSERNAME/PASSWORD INVÁLIDOS!");
                     }
