@@ -63,7 +63,22 @@ public class Ficheiro {
                         }
                     } while (sc.hasNextLine());
 
-                    if (flag == 1 && tipo == 3) {
+                    if (flag == 1 && tipo == 0) {
+                        System.out.println("\n\tCLIENTE LOGADO COM SUCESSO!");
+                        Thread.sleep(1000);
+                        System.out.println("Entra menu cliente");
+                        break;
+                    } else if (flag == 1 && tipo == 1) {
+                        System.out.println("\n\tFUNCIONÁRIO LOGADO COM SUCESSO!");
+                        Thread.sleep(1000);
+                        System.out.println("Entra menu funcionário");
+                        break;
+                    } else if (flag == 1 && tipo == 2) {
+                        System.out.println("\n\tDONO DE EMPRESA LOGADO COM SUCESSO!");
+                        Thread.sleep(1000);
+                        System.out.println("Entra menu dono de empresa");
+                        break;
+                    } else if (flag == 1 && tipo == 3) {
                         System.out.println("\n\tADMIN LOGADO COM SUCESSO!");
                         Thread.sleep(1000);
                         System.out.println("Entra menu admin");
