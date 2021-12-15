@@ -25,7 +25,6 @@ public class Main {
                 case 1:{
                     Registo login = new Registo();
                     login.login();
-                    System.out.println("Entrou.");
                     break;
                 }
                 default:{
