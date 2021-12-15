@@ -1,19 +1,18 @@
 package PetBeauty;
 
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Scanner;
 
-public class Cliente extends Utilizador{
+public class DonoEmpresa extends Utilizador{
 
-    public Cliente(String username, String password, String nome, String apelido, String NIF, String nTel, String tipo) {
+    public DonoEmpresa(String username, String password, String nome, String apelido, String NIF, String nTel, String tipo) {
         super(username, password, nome, apelido, NIF, nTel, "0");
     }
 
     /*
-        MENU DO CLIENTE
+        MENU DO DONO DE EMPRESA
      */
-    public void menuCliente() throws IOException {
+    public void menuDonoEmpresa() throws IOException {
         String textoVermelho = "\033[31m";
         String textoVerde = "\033[32m";
         String textoAmarelo = "\033[93m";
@@ -30,14 +29,14 @@ public class Cliente extends Utilizador{
         Scanner sc = new Scanner(System.in);
         do{
             System.out.println(System.lineSeparator().repeat(3));
-            System.out.println(textoAmarelo + "\t-------------- MENU CLIENTE --------------");
-            System.out.println("\t\t1 - Ver Perfil");
-            System.out.println("\t\t2 - Editar Perfil");
-            System.out.println("\t\t3 - Visualizar todos os animais");
-            System.out.println("\t\t4 - Criar animais");
-            System.out.println("\t\t5 - Marcar consultas");
-            System.out.println("\t\t6 - Ver consultas marcadas");
-            System.out.println("\t\t7 - Pagar consultas \n");
+            System.out.println(textoAmarelo + "\t-------------- MENU DONO DE EMPRESA --------------");
+            System.out.println("\t\t1 - VER PERFIL");
+            System.out.println("\t\t2 - EDITAR PERFIL");
+            System.out.println("\t\t3 - VER EMPRESAS");
+            System.out.println("\t\t4 - CRIAR EMPRESAS");
+            System.out.println("\t\t5 - VER FUNCIONÁRIOS");
+            System.out.println("\t\t6 - CRIAR FUNCIONÁRIOS");
+            System.out.println("\t\t7 - VER CONSULTAS AGENDADAS \n");
             System.out.println("\t\t0 - SAIR" + textoNormal);
 
             do{
@@ -48,15 +47,15 @@ public class Cliente extends Utilizador{
 
             switch(op){
                 /*
-                    Ver informação completa do cliente
+                    VER INFORMAÇÃO COMPELETA DO SEU PERFIL
                  */
                 case 1:{
-                    perfilCliente();
+                    perfilDono();
                     break;
                 }
 
                 /*
-                    Editar dados co cliente
+                    EDITAR PERFIL
                  */
                 case 2:{
                     Ficheiro file = new Ficheiro();
@@ -65,21 +64,34 @@ public class Cliente extends Utilizador{
                 }
 
                 /*
-                    VER TODOS OS ANIMAIS COM O MESMO NIF DE DONO ASSOCIADO
+                    VER TODOS AS EMPRESAS
                  */
                 case 3:{
-                    a.listarAnimais(getNIF());
+                    e.listarEmpresas(getNIF());
                     break;
                 }
 
                 /*
-                    ADICIONA NOVOS ANIMAIS
+                    ADICIONA NOVAS EMPRESAS
                  */
                 case 4:{
-                    a.RegistarAnimal(getNIF());
+                    e.RegistarNovaEmpresa(getNIF());
                     break;
                 }
+                /*
+                    VER TODOS OS FUNCIONÁRIOS DA EMPRESA
+                 */
+                case 5:{
 
+                    break;
+                }
+                /*
+                    ADICIONAR NOVOS FUNCIONÁRIOS
+                 */
+                case 6:{
+
+                    break;
+                }
                 default:{
                     System.out.println(textoVerde + "A SAIR ..." + textoNormal);
                     System.exit(0);
@@ -89,14 +101,14 @@ public class Cliente extends Utilizador{
     }
 
     /*
-        Visualizar dados compeltos do cliente, excluindo a palavra-pass
+        VISUALIZAR TODOS OS SEUS DADOS EXEPTO PALAVRA PASS
      */
-    public void perfilCliente(){
+    public void perfilDono(){
         String textoRoxo = "\033[95m";
         String textoNormal = "\033[0m";
 
         System.out.println(System.lineSeparator().repeat(2));
-        System.out.println(textoRoxo + "\t----- PERFIL CLIENTE -----" + textoNormal);
+        System.out.println(textoRoxo + "\t----- PERFIL DONO DA EMPRESA -----" + textoNormal);
         System.out.println("\t\tNOME - " + getPrimeiroNome());
         System.out.println("\t\tAPELIDO - " + getApelido());
         System.out.println("\t\tUSERNAME - " + getUsername());

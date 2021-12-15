@@ -5,7 +5,6 @@ import java.util.*;
 
 public class Ficheiro {
     public static ArrayList<Utilizador> existeU = new ArrayList<>();
-    public static ArrayList<Animal> existeA = new ArrayList<>();
     ArrayList utilizadores = new ArrayList();
 
     public Ficheiro() { }
@@ -27,7 +26,7 @@ public class Ficheiro {
          */
         if(!f.exists()){
             formatter = new Formatter(f);
-            formatter.format("ADMIN:ADMIN:Admin:Admin:123456789:123456789:3");
+            formatter.format("ADMIN:ADMIN:Admin:Admin:123456789:123456789:3\n");
             formatter.flush();
             formatter.close();
         }
@@ -41,13 +40,10 @@ public class Ficheiro {
                 int tipo = 0;
                 do {
                     System.out.print("Utilizador: ");
-                    String user = scn.nextLine();
+                    String us = scn.nextLine();
 
                     System.out.print("Palavra Pass: ");
-                    String pass = scn.nextLine();
-
-                    String us = user.toUpperCase();
-                    String pss = pass.toUpperCase();
+                    String pss = scn.nextLine();
 
                     String linha;
                     String[] divLinha;
@@ -72,9 +68,7 @@ public class Ficheiro {
                         }
                     } while (sc.hasNextLine());
 
-                    importaAnimais();
-
-                    //Direcionamento de Cliente
+                    //DIRECIONAMENTO DE PARA O MENU CLIENTE
                     if (flag == 1 && tipo == 0) {
                         System.out.println(textoVerde + "\n\tCLIENTE LOGADO COM SUCESSO!" + textoNormal);
                         Thread.sleep(1000);
@@ -82,21 +76,22 @@ public class Ficheiro {
                         cl.menuCliente();
                         break;
                     }
-                    //Direcionamento de Funcionário
+                    //DIRECIONAMENTO DE PARA O MENU FUNCIONÁRIO
                     else if (flag == 1 && tipo == 1) {
                         System.out.println(textoVerde + "\n\tFUNCIONÁRIO LOGADO COM SUCESSO!" + textoNormal);
                         Thread.sleep(1000);
                         System.out.println("Entra menu funcionário");
                         break;
                     }
-                    //Direcionamento de Dono de Empresa
+                    //DIRECIONAMENTO DE PARA O MENU DONO DE CLIENTE
                     else if (flag == 1 && tipo == 2) {
                         System.out.println(textoVerde + "\n\tDONO DE EMPRESA LOGADO COM SUCESSO!" + textoNormal);
                         Thread.sleep(1000);
-                        System.out.println("Entra menu dono de empresa");
+                        DonoEmpresa dn = new DonoEmpresa(divLinha[0].trim(), divLinha[1].trim(), divLinha[2].trim(), divLinha[3].trim(), divLinha[4].trim(), divLinha[5].trim(), divLinha[6].trim());
+                        dn.menuDonoEmpresa();
                         break;
                     }
-                    //Direcionamento de Admin
+                    //DIRECIONAMENTO DE PARA O MENU ADMIN
                     else if (flag == 1 && tipo == 3) {
                         System.out.println(textoVerde + "\n\tADMIN LOGADO COM SUCESSO!" + textoNormal);
                         Thread.sleep(1000);
@@ -125,51 +120,6 @@ public class Ficheiro {
     }
 
     /*
-        IMPORTA TODA A INFORMAÇÃO DO FICHEIRO ANIMAIS.DAT
-     */
-    public void importaAnimais() throws FileNotFoundException{
-        String textoVermelho = "\033[31m";
-        String textoVerde = "\033[32m";
-        String textoNormal = "\033[0m";
-
-        File f = new File("animais.dat");
-        Formatter formatter;
-        /*
-            Caso não exista, o ficheiro
-         */
-        if(!f.exists()){
-            formatter = new Formatter(f);
-            formatter.format("0:0:0:0");
-            formatter.flush();
-            formatter.close();
-        }
-        else {
-            Scanner scn = new Scanner(System.in);
-            try {
-
-                String linha;
-                String[] divLinha;
-                Scanner sc = new Scanner(new File("animais.dat"));
-                do {
-                    linha = sc.nextLine();
-                    divLinha = linha.split(":");
-                    existeA.add(new Animal(divLinha[0].trim(), divLinha[1].trim(), divLinha[2].trim(), divLinha[3].trim()));
-
-                } while (sc.hasNextLine());
-
-
-            } catch (Exception e) {
-                System.out.println(textoVermelho + "FICHEIRO COM DADOS DE ANIMAIS NÃO ENCONTRADO!" + textoNormal);
-                System.exit(0);
-            }
-        }
-    }
-
-    /*
-        ACRESCENTA UM ANIMAL A LISTA
-     */
-    
-    /*
         PERMITE EDITAR INOFRMAÇÕ DE UM UTILIZADOR
      */
     public void alterarDados(String utilizador) throws FileNotFoundException {
@@ -181,7 +131,7 @@ public class Ficheiro {
         String textoLaranja = "\033[33m";
 
         Scanner scn = new Scanner(System.in);
-        String us = utilizador.toUpperCase();
+        String us = utilizador;
         int esc = 0, count = 1;
         Scanner s = new Scanner(new File("registo.dat"));
         while (s.hasNext()){
@@ -360,5 +310,77 @@ public class Ficheiro {
             System.out.println(textoVermelho + "Ficheiro não encontrado!" + textoNormal);
             System.exit(0);
         }
+    }
+
+    /*
+        ANÁLISA SE O NIF JÁ EXISTE
+     */
+    public int LerRegistoIguais (String nif) {
+        String textoVermelho = "\033[31m";
+        String textoVerde = "\033[32m";
+        String textoNormal = "\033[0m";
+
+        int copia=0;
+
+        try{
+            String linha;
+            String[] divLinha;
+            Scanner sc = new Scanner(new File("registo.dat"));
+            do{
+                linha = sc.nextLine();
+                divLinha = linha.split(":");
+                existeU.add(new Utilizador(divLinha[0].trim(), divLinha[1].trim(), divLinha[2].trim(), divLinha[3].trim(), divLinha[4].trim(), divLinha[5].trim(), divLinha[6].trim()));
+
+                if(nif.equals(divLinha[4])){
+                    copia = 1;
+                    break;
+                }
+            }while(sc.hasNextLine());
+
+            if(copia == 1){
+                System.out.println(textoVermelho + "\tNIF JÁ EXISTENTE!" + textoNormal);
+            }
+
+        }catch (Exception e) {
+            System.out.println(textoVermelho + "\tFICHEIRO NÃO ENCONTRADO!" + textoNormal);
+            System.exit(0);
+        }
+        return copia;
+    }
+
+    /*
+        ANÁLISA SE O UTILIZADOR JÁ EXISTE
+     */
+    public int LerUtilizadoresIguais (String utilizador) {
+        String textoVermelho = "\033[31m";
+        String textoVerde = "\033[32m";
+        String textoNormal = "\033[0m";
+
+        int copia=0;
+
+        try{
+            String linha;
+            String[] divLinha;
+            Scanner sc = new Scanner(new File("registo.dat"));
+            do{
+                linha = sc.nextLine();
+                divLinha = linha.split(":");
+                existeU.add(new Utilizador(divLinha[0].trim(), divLinha[1].trim(), divLinha[2].trim(), divLinha[3].trim(), divLinha[4].trim(), divLinha[5].trim(), divLinha[6].trim()));
+
+                if(utilizador.equals(divLinha[0])){
+                    copia = 1;
+                    break;
+                }
+            }while(sc.hasNextLine());
+
+            if(copia == 1){
+                System.out.println(textoVermelho + "\tUTILIZADOR JÁ EXISTENTE!" + textoNormal);
+            }
+
+        }catch (Exception e) {
+            System.out.println(textoVermelho + "\tFICHEIRO NÃO ENCONTRADO!" + textoNormal);
+            System.exit(0);
+        }
+        return copia;
     }
 }

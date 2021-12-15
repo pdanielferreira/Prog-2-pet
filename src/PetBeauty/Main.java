@@ -13,18 +13,24 @@ public class Main {
         do{
             System.out.println("\n-------- MENU --------");
             System.out.println("\t1 - LOGIN");
+            System.out.println("\t2 - REGISTAR");
             System.out.println("\t0 - SAIR");
 
             do{
                 System.out.print("Escolha uma opção: ");
                 op = sc.nextInt();
-            }while(op < 0 || op > 1);
+            }while(op < 0 || op > 2);
 
 
             switch(op){
                 case 1:{
                     Registo login = new Registo();
                     login.login();
+                    break;
+                }
+                case 2:{
+                    Registo registar = new Registo();
+                    registar.registarUtilizador();
                     break;
                 }
                 default:{
