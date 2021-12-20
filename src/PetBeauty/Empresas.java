@@ -7,10 +7,10 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Formatter;
 import java.util.Scanner;
-import java.util.UUID;
 
 public class Empresas {
     public static ArrayList<Empresa> existeE = new ArrayList<>();
+    public static ArrayList<AssociacaoFuncEmpresa> existeF = new ArrayList<>();
 
     /*
         IMPORTA TODA A INFORMAÇÃO DO FICHEIRO EMPRESAS.DAT
@@ -195,6 +195,7 @@ public class Empresas {
 
                 System.out.println(System.lineSeparator().repeat(2));
                 System.out.println(textoRoxo + "\t----- EMPRESA: " + existeE.get(i).getNifEmpresa() + " -----" + textoNormal);
+                System.out.println(textoRoxo + "\t----- CÓDIGO DE EMPRESA: " + i + " -----" + textoNormal);
                 System.out.println("\t\tNOME - " + existeE.get(i).getNome());
                 System.out.println("\t\tMORADA - " + existeE.get(i).getMorada());
                 System.out.println("\t\tLOCALIDADE - " + existeE.get(i).getLocalidade());
@@ -209,5 +210,139 @@ public class Empresas {
 
     }
 
+    /*
+        IMPORTA TODA A INFORMAÇÃO DO FICHEIRO FUNCIONARIOS.DAT
+     */
+    public void importaFuncionarios() throws FileNotFoundException {
+        String textoVermelho = "\033[31m";
+        String textoVerde = "\033[32m";
+        String textoNormal = "\033[0m";
 
+        File f = new File("funcionarios.dat");
+        Formatter formatter;
+        /*
+            Caso não exista, o ficheiro
+         */
+        if(!f.exists()){
+            formatter = new Formatter(f);
+            formatter.format("0:0:0\n");
+            formatter.flush();
+            formatter.close();
+        }
+        else {
+            Scanner scn = new Scanner(System.in);
+            try {
+
+                String linha;
+                String[] divLinha;
+                Scanner sc = new Scanner(new File("funcionarios.dat"));
+                do {
+                    linha = sc.nextLine();
+                    divLinha = linha.split(":");
+                    existeF.add(new AssociacaoFuncEmpresa(divLinha[0].trim(), divLinha[1].trim(), divLinha[2].trim()));
+
+                } while (sc.hasNextLine());
+
+
+            } catch (Exception e) {
+                System.out.println(textoVermelho + "FICHEIRO COM DADOS DE FUNCIONÁRIOS NÃO ENCONTRADO!" + textoNormal);
+                System.exit(0);
+            }
+        }
+    }
+
+    /*
+        ASSOCIAR FUNCIONARIO A UMA EMPRESA
+     */
+    public void associarFuncEmpresa(String nifF, int valor) throws IOException{
+        String textoVermelho = "\033[31m";
+        String textoRoxo = "\033[95m";
+        String textoVerde = "\033[32m";
+        String textoNormal = "\033[0m";
+        String nifEmpresa = null;
+
+        for (int i=0; i<existeE.size(); i++){
+            if (i==valor){
+                nifEmpresa = existeE.get(i).getNifEmpresa();
+            }
+        }
+        FileWriter associar = new FileWriter("funcionarios.dat", true);
+        Scanner sc = new Scanner(System.in);
+        Formatter formatter;
+
+        try{
+            formatter = new Formatter(associar);
+            formatter.format(nifF + ":");
+            formatter.format(nifEmpresa + ":");
+            formatter.format(1 + "\n");
+            formatter.flush();
+            formatter.close();
+
+            if(formatter != null){
+
+                System.out.println(System.lineSeparator().repeat(2));
+                System.out.println(textoVerde + "\n\tUM FUNCIONÁRIO FOI ASSOCIADO A EMPRESA: . " + nifEmpresa + textoNormal);
+                System.out.println(System.lineSeparator().repeat(1));
+
+                Ficheiro f = new Ficheiro();
+                f.lerNIF(nifF);
+
+                existeF.add(new AssociacaoFuncEmpresa(nifF, nifEmpresa, "1"));
+
+            }else{
+                System.out.println(textoVermelho + "ASSOCIAÇÃO NÃO EFETUADA" + textoNormal);
+            }
+
+        }catch (Exception e) {
+            System.out.println(textoVermelho + "FICHEIRO NÃO ENCONTRADO!" + textoNormal);
+            System.exit(0);
+        }
+    }
+
+    /*
+        LER FUNCIONÁRIOS DE UMA EMPRESA
+     */
+    public void lerFuncEmp(int valor) throws IOException{
+        String textoVermelho = "\033[31m";
+        String textoRoxo = "\033[95m";
+        String textoVerde = "\033[32m";
+        String textoNormal = "\033[0m";
+        String nifEmpresa = null;
+        String txt = null;
+        String nifF = null;
+
+        for (int i=0; i<existeE.size(); i++){
+            if (i==valor){
+                nifEmpresa = existeE.get(i).getNifEmpresa();
+            }
+        }
+
+        for (int i=0; i<existeF.size(); i++){
+            if (existeF.get(i).getNifEmpresa().equals(nifEmpresa)){
+                nifF=existeF.get(i).getNifFuncionario();
+                String despedido = existeF.get(i).getAtivo();
+
+                if (despedido.equals("1")){
+                    txt = " A TRABALHAR ";
+                }else{
+                    txt = " DESPEDIDO ";
+                }
+            }
+        }
+
+        for(int j=0; j<Ficheiro.existeU.size(); j++){
+            System.out.println("entra");
+            if(Ficheiro.existeU.get(j).getNIF().equals(nifF)){
+
+                System.out.println(System.lineSeparator().repeat(2));
+                System.out.println(textoRoxo + "\t----- DADOS DO FUNCIONÁRIO -----" + textoNormal);
+                System.out.println("\t\tUSERNAME - " + Ficheiro.existeU.get(j).getUsername());
+                System.out.println("\t\tNOME - " +  Ficheiro.existeU.get(j).getPrimeiroNome());
+                System.out.println("\t\tAPELIDO - " +  Ficheiro.existeU.get(j).getApelido());
+                System.out.println("\t\tNIF - " +  Ficheiro.existeU.get(j).getNIF());
+                System.out.println("\t\tNÚMERO DE TELEMÓVEL - " +  Ficheiro.existeU.get(j).getnTel());
+                System.out.println("\t\tATIVO - " + txt);
+            }
+        }
+    }
 }

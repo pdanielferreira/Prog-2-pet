@@ -24,8 +24,9 @@ public class DonoEmpresa extends Utilizador{
 
         Empresas e = new Empresas();
         e.importaEmpresas();
+        e.importaFuncionarios();
 
-        int op = 0;
+        int op = 0, aux;
         Scanner sc = new Scanner(System.in);
         do{
             System.out.println(System.lineSeparator().repeat(3));
@@ -82,13 +83,42 @@ public class DonoEmpresa extends Utilizador{
                     VER TODOS OS FUNCIONÁRIOS DA EMPRESA
                  */
                 case 5:{
+                    e.listarEmpresas(getNIF());
 
+                    //ENTRA NO MODO ADICIONA FUNCIONARIO
+                    System.out.println(System.lineSeparator().repeat(1));
+                    System.out.print( textoRoxo + "INDIQUE O CÓDIGO DA EMPRESA A QUAL DESEJA VER OS FUNCIONÁRIOS: ");
+                    int valor = sc.nextInt();
+                    System.out.print(textoNormal);
+
+                    e.lerFuncEmp(valor);
                     break;
                 }
+
                 /*
                     ADICIONAR NOVOS FUNCIONÁRIOS
                  */
                 case 6:{
+                    //LISTA TODAS AS EMPRESAS EXISTENTES
+                    e.listarEmpresas(getNIF());
+
+                    //ENTRA NO MODO ADICIONA FUNCIONARIO
+                    String nifFuncionario;
+                    do {
+                        System.out.println(System.lineSeparator().repeat(1));
+                        System.out.print( textoRoxo + "INDIQUE O CÓDIGO DA EMPRESA A QUAL DESEJA ASSOCIAR UM FUNCIONÁRIO: ");
+                        int valor = sc.nextInt();
+                        System.out.print(textoNormal);
+
+                        Ficheiro f = new Ficheiro();
+                        nifFuncionario = f.registarFuncionario();
+
+                        if (!nifFuncionario.equals("1")){
+                            e.associarFuncEmpresa(nifFuncionario, valor);
+                        }else{
+                            System.out.println(textoVermelho + "OCORREU UM ERRO!! " + textoNormal);
+                        }
+                    }while (nifFuncionario.equals("1"));        //RETORNA, RETORNA ERRO
 
                     break;
                 }

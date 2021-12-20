@@ -383,4 +383,132 @@ public class Ficheiro {
         }
         return copia;
     }
+
+    /*
+        REGISTAR UM NOVO FUNCIONARIO
+     */
+    public String registarFuncionario() throws IOException{
+        String textoVermelho = "\033[31m";
+        String textoRoxo = "\033[95m";
+        String textoVerde = "\033[32m";
+        String textoNormal = "\033[0m";
+
+        FileWriter registar = new FileWriter("registo.dat", true);
+        Scanner sc = new Scanner(System.in);
+        Formatter formatter;
+        String nif, nome, apelido, utilizador, pass, nTel, escolha;
+        int copia=0, op, erro1=0, erro2=0, copia2=0;
+
+        try{
+            do {
+                System.out.print("NIF: ");
+                nif = sc.nextLine();
+
+                copia = LerRegistoIguais(nif);
+
+                if (nif.length()>9 || nif.length()<9){
+                    System.out.println(textoVermelho + "\t\tNIF INVÁLIDO!" + textoNormal);
+                    erro1=1;
+                }else{
+                    erro1=0;
+                }
+
+            }while(copia==1 || erro1==1);
+
+            System.out.println(textoVerde + "\t\tNIF VÁLIDO!" + textoNormal);
+
+            System.out.print("PRIMEIRO NOME: ");
+            nome = sc.nextLine();
+            System.out.print("APELIDO: ");
+            apelido = sc.nextLine();
+
+            do {
+                System.out.print("NÚMERO DE TELEMÓVEL: ");
+                nTel = sc.nextLine();
+
+                if (nTel.length()>9 || nTel.length()<9){
+                    System.out.println(textoVermelho + "\t\tNÚMERO DE TELEMÓVEL INVÁLIDO!" + textoNormal);
+                    erro2=1;
+                }else{
+                    erro2=0;
+                }
+
+            }while(erro2==1);
+            System.out.println(textoVerde + "\t\tNÚMERO DE TELEMÓVEL VÁLIDO!" + textoNormal);
+
+            do {
+                System.out.print("UTILIZADOR: ");
+                utilizador = sc.nextLine();
+
+                copia2 = LerUtilizadoresIguais(utilizador);
+
+            }while(copia2==1);
+
+            System.out.print("PALAVRA PASS: ");
+            pass = sc.nextLine();
+
+            formatter = new Formatter(registar);
+            formatter.format(utilizador + ":");
+            formatter.format(pass + ":");
+            formatter.format(nome + ":");
+            formatter.format(apelido + ":");
+            formatter.format(nif + ":");
+            formatter.format(nTel + ":");
+            formatter.format(1 + "\n");
+            formatter.flush();
+            formatter.close();
+
+            if(formatter != null){
+
+                System.out.println(System.lineSeparator().repeat(2));
+                System.out.println(textoVerde + "\n\tFOI ADICIONADO UM FUNCIONÁRIO. " + textoNormal);
+                System.out.println(System.lineSeparator().repeat(1));
+                System.out.println(textoRoxo + "\t----- DADOS DO REGISTO -----" + textoNormal);
+                System.out.println("\t\tNOME - " + nome);
+                System.out.println("\t\tAPELIDO - " + apelido);
+                System.out.println("\t\tUSERNAME - " + utilizador);
+                System.out.println("\t\tNIF - " + nif);
+                System.out.println("\t\tNÚMERO DE TELEMÓVEL - " + nTel);
+
+                existeU.add(new Utilizador(utilizador, pass, nome, apelido, nif, nTel, "1"));
+
+                return nif;
+
+            }else{
+                System.out.println(textoVermelho + "REGISTO NÃO EFETUADO" + textoNormal);
+                return "1";
+            }
+
+        }catch (Exception e) {
+            System.out.println(textoVermelho + "FICHEIRO NÃO ENCONTRADO!" + textoNormal);
+            System.exit(0);
+        }
+        return "1";
+    }
+
+    /*
+       LER REGISTO PELO NIF
+    */
+    public void lerNIF(String nif) throws FileNotFoundException {
+        String textoVermelho = "\033[31m";
+        String textoVerde = "\033[32m";
+        String textoAmarelo = "\033[93m";
+        String textoRoxo = "\033[95m";
+        String textoNormal = "\033[0m";
+        String textoLaranja = "\033[33m";
+
+        for(int i=0; i<existeU.size(); i++){
+            if(existeU.get(i).getNIF().equals(nif)){
+
+                System.out.println(System.lineSeparator().repeat(2));
+                System.out.println(textoRoxo + "\t----- DADOS DO FUNCIONÁRIO -----" + textoNormal);
+                System.out.println("\t\tUSERNAME - " + existeU.get(i).getUsername());
+                System.out.println("\t\tNOME - " +  existeU.get(i).getPrimeiroNome());
+                System.out.println("\t\tAPELIDO - " +  existeU.get(i).getApelido());
+                System.out.println("\t\tNIF - " +  existeU.get(i).getNIF());
+                System.out.println("\t\tNÚMERO DE TELEMÓVEL - " +  existeU.get(i).getnTel());
+            }
+        }
+    }
+
 }

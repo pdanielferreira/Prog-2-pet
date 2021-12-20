@@ -25,6 +25,8 @@ public class Cliente extends Utilizador{
 
         Empresas e = new Empresas();
         e.importaEmpresas();
+        e.importaFuncionarios();
+
 
         int op = 0;
         Scanner sc = new Scanner(System.in);
