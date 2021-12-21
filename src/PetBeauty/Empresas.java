@@ -314,6 +314,7 @@ public class Empresas {
         for (int i=0; i<existeE.size(); i++){
             if (i==valor){
                 nifEmpresa = existeE.get(i).getNifEmpresa();
+                break;
             }
         }
 
@@ -327,22 +328,52 @@ public class Empresas {
                 }else{
                     txt = " DESPEDIDO ";
                 }
+
+                Ficheiro f = new Ficheiro();
+                f.lerNIF(nifF);
+                System.out.println("\t\tATIVO - " +  txt);
             }
         }
+    }
 
-        for(int j=0; j<Ficheiro.existeU.size(); j++){
-            System.out.println("entra");
-            if(Ficheiro.existeU.get(j).getNIF().equals(nifF)){
+    /*
+        LISTA TODAS AS EMPRESAS
+     */
+    public void listarTodasEmpresas(){
+        String textoVermelho = "\033[31m";
+        String textoVerde = "\033[32m";
+        String textoAmarelo = "\033[93m";
+        String textoRoxo = "\033[95m";
+        String textoNormal = "\033[0m";
+        int count=0;
 
-                System.out.println(System.lineSeparator().repeat(2));
-                System.out.println(textoRoxo + "\t----- DADOS DO FUNCIONÁRIO -----" + textoNormal);
-                System.out.println("\t\tUSERNAME - " + Ficheiro.existeU.get(j).getUsername());
-                System.out.println("\t\tNOME - " +  Ficheiro.existeU.get(j).getPrimeiroNome());
-                System.out.println("\t\tAPELIDO - " +  Ficheiro.existeU.get(j).getApelido());
-                System.out.println("\t\tNIF - " +  Ficheiro.existeU.get(j).getNIF());
-                System.out.println("\t\tNÚMERO DE TELEMÓVEL - " +  Ficheiro.existeU.get(j).getnTel());
-                System.out.println("\t\tATIVO - " + txt);
+        System.out.println(textoRoxo + "\t\t TODAS AS EMPRESAS:" + textoNormal);
+
+        for(int i=0; i<existeE.size(); i++) {
+            System.out.println(System.lineSeparator().repeat(2));
+            System.out.println(textoRoxo + "\t----- EMPRESA: " + existeE.get(i).getNifEmpresa() + " -----" + textoNormal);
+            System.out.println(textoRoxo + "\t----- CÓDIGO DE EMPRESA: " + i + " -----" + textoNormal);
+            System.out.println("\t\tNOME - " + existeE.get(i).getNome());
+            System.out.println("\t\tMORADA - " + existeE.get(i).getMorada());
+            System.out.println("\t\tLOCALIDADE - " + existeE.get(i).getLocalidade());
+            System.out.println("\t\tNÚMERO DE TELEMÓVEL - " + existeE.get(i).getnTel());
+            count++;
+        }
+        if(count==0){
+            System.out.println(textoVermelho + "\t\t NÃO EXISTEM EMPRESAS REGISTADOS" + textoNormal);
+        }
+
+    }
+
+    /*
+        DEVOLVER NOME DA EMPRESA PELO NIF
+     */
+    public String devolverNomeEmp(String nif){
+        for (int i=0; i<existeE.size(); i++){
+            if (existeE.get(i).getNifEmpresa().equals(nif)){
+                return existeE.get(i).getNome();
             }
         }
+        return null;
     }
 }

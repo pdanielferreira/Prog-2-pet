@@ -1,20 +1,17 @@
 package PetBeauty;
 
-import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.text.ParseException;
 import java.util.Scanner;
 
-public class Cliente extends Utilizador{
-
-    public Cliente(String username, String password, String nome, String apelido, String NIF, String nTel, String tipo) {
-        super(username, password, nome, apelido, NIF, nTel, "0");
+public class Funcionario extends Utilizador{
+    public Funcionario(String username, String password, String nome, String apelido, String NIF, String nTel, String tipo) {
+        super(username, password, nome, apelido, NIF, nTel, "1");
     }
 
     /*
-        MENU DO CLIENTE
+        MENU DO FUNCIONÁRIO
      */
-    public void menuCliente() throws IOException, ParseException {
+    public void menuFuncionario() throws IOException {
         String textoVermelho = "\033[31m";
         String textoVerde = "\033[32m";
         String textoAmarelo = "\033[93m";
@@ -34,18 +31,18 @@ public class Cliente extends Utilizador{
         Marcacoes m = new Marcacoes();
         m.importaMarcacoes();
 
-        int op = 0;
+        int op = 0, aux;
         Scanner sc = new Scanner(System.in);
         do{
             System.out.println(System.lineSeparator().repeat(3));
-            System.out.println(textoAmarelo + "\t-------------- MENU CLIENTE --------------");
-            System.out.println("\t\t1 - Ver Perfil");
-            System.out.println("\t\t2 - Editar Perfil");
-            System.out.println("\t\t3 - Visualizar todos os animais");
-            System.out.println("\t\t4 - Criar animais");
-            System.out.println("\t\t5 - Marcar consultas");
-            System.out.println("\t\t6 - Ver marcações");
-            System.out.println("\t\t7 - Pagar consultas \n");
+            System.out.println(textoAmarelo + "\t-------------- MENU FUNCIONÁRIO DE EMPRESA --------------");
+            System.out.println("\t\t1 - VER PERFIL");
+            System.out.println("\t\t2 - EDITAR PERFIL");
+            System.out.println("\t\t3 - VER CONSULTAS");
+            System.out.println("\t\t4 - CONFIMAR CONSULTAS");
+            System.out.println("\t\t5 - ACRESENTAR INFORMAÇÃO NAS CONSULTAS");
+            System.out.println("\t\t6 - CRIAR FUNCIONÁRIOS");
+            System.out.println("\t\t7 - VER CONSULTAS AGENDADAS \n");
             System.out.println("\t\t0 - SAIR" + textoNormal);
 
             do{
@@ -56,54 +53,58 @@ public class Cliente extends Utilizador{
 
             switch(op){
                 /*
-                    Ver informação completa do cliente
+                    VER INFORMAÇÃO COMPELETA DO SEU PERFIL
                  */
                 case 1:{
-                    perfilCliente();
+                    perfilDono();
                     break;
                 }
 
                 /*
-                    Editar dados co cliente
+                    EDITAR PERFIL
                  */
                 case 2:{
-                    Ficheiro file = new Ficheiro();
-                    file.alterarDados(getUsername());
+                    f.alterarDados(getUsername());
                     break;
                 }
 
                 /*
-                    VER TODOS OS ANIMAIS COM O MESMO NIF DE DONO ASSOCIADO
+                    MOSTRA TODOS OS PEDIDOS A UM FUNCIONÁRIO
                  */
                 case 3:{
-                    a.listarAnimais(getNIF());
+                    m.mostrarPedidos(getNIF());
                     break;
                 }
 
                 /*
-                    ADICIONA NOVOS ANIMAIS
+
                  */
                 case 4:{
-                    a.RegistarAnimal(getNIF());
+
                     break;
                 }
-
                 /*
-                    MARCAR NOVAS CONSULTAS
+
                  */
                 case 5:{
-                    m.registarConsulta(getNIF());
+
                     break;
                 }
 
                 /*
-                    VER MARCAÇÕES
+
                  */
                 case 6:{
-                    m.mostrarMarcacoesCliente(getNIF());
+
                     break;
                 }
+                /*
 
+                 */
+                case 7:{
+
+                    break;
+                }
                 default:{
                     System.out.println(textoVerde + "A SAIR ..." + textoNormal);
                     System.exit(0);
@@ -113,14 +114,14 @@ public class Cliente extends Utilizador{
     }
 
     /*
-        Visualizar dados compeltos do cliente, excluindo a palavra-pass
+        VISUALIZAR TODOS OS SEUS DADOS EXEPTO PALAVRA PASS
      */
-    public void perfilCliente(){
+    public void perfilDono(){
         String textoRoxo = "\033[95m";
         String textoNormal = "\033[0m";
 
         System.out.println(System.lineSeparator().repeat(2));
-        System.out.println(textoRoxo + "\t----- PERFIL CLIENTE -----" + textoNormal);
+        System.out.println(textoRoxo + "\t----- PERFIL DO FUNCIONÁRIO -----" + textoNormal);
         System.out.println("\t\tNOME - " + getPrimeiroNome());
         System.out.println("\t\tAPELIDO - " + getApelido());
         System.out.println("\t\tUSERNAME - " + getUsername());

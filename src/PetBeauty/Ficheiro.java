@@ -80,7 +80,8 @@ public class Ficheiro {
                     else if (flag == 1 && tipo == 1) {
                         System.out.println(textoVerde + "\n\tFUNCIONÁRIO LOGADO COM SUCESSO!" + textoNormal);
                         Thread.sleep(1000);
-                        System.out.println("Entra menu funcionário");
+                        Funcionario func = new Funcionario(divLinha[0].trim(), divLinha[1].trim(), divLinha[2].trim(), divLinha[3].trim(), divLinha[4].trim(), divLinha[5].trim(), divLinha[6].trim());
+                        func.menuFuncionario();
                         break;
                     }
                     //DIRECIONAMENTO DE PARA O MENU DONO DE CLIENTE
@@ -120,6 +121,32 @@ public class Ficheiro {
     }
 
     /*
+        SISTEMA DE IMPORTAR DADOS DE UTILZIADORES
+     */
+    public void importaU() throws FileNotFoundException{
+        String textoVermelho = "\033[31m";
+        String textoVerde = "\033[32m";
+        String textoAmarelo = "\033[93m";
+        String textoRoxo = "\033[95m";
+        String textoNormal = "\033[0m";
+        String textoLaranja = "\033[33m";
+
+        try{
+            String linha;
+            String[] divLinha;
+            Scanner sc = new Scanner(new File("registo.dat"));
+            do{
+                linha = sc.nextLine();
+                divLinha = linha.split(":");
+                existeU.add(new Utilizador(divLinha[0].trim(), divLinha[1].trim(), divLinha[2].trim(), divLinha[3].trim(), divLinha[4].trim(), divLinha[5].trim(), divLinha[6].trim()));
+            }while(sc.hasNextLine());
+
+        }catch (Exception e) {
+            System.out.println(textoVermelho + "\tFICHEIRO NÃO ENCONTRADO!" + textoNormal);
+            System.exit(0);
+        }
+    }
+    /*
         PERMITE EDITAR INOFRMAÇÕ DE UM UTILIZADOR
      */
     public void alterarDados(String utilizador) throws FileNotFoundException {
@@ -151,7 +178,7 @@ public class Ficheiro {
                     existeU.add(new Utilizador(divLinha[0].trim(), divLinha[1].trim(), divLinha[2].trim(), divLinha[3].trim(), divLinha[4].trim(), divLinha[5].trim(), divLinha[6].trim()));
 
                     if (us.equals(divLinha[0])) {
-                        System.out.println(textoRoxo + "\t----- PERFIL CLIENTE -----" + textoNormal);
+                        System.out.println(textoRoxo + "\t----- PERFIL DE UTILIZADOR -----" + textoNormal);
                         System.out.println("\t\tUSERNAME - " + divLinha[0]);
                         System.out.println("\t\tNOME - " + divLinha[2]);
                         System.out.println("\t\tAPELIDO - " + divLinha[3]);
@@ -173,13 +200,12 @@ public class Ficheiro {
                         System.out.println("\t\t1 - PASSWORD");
                         System.out.println("\t\t2 - NOME");
                         System.out.println("\t\t3 - APELIDO");
-                        System.out.println("\t\t4 - NIF");
-                        System.out.println("\t\t5 - NÚMERO DE TELEMÓVEL");
+                        System.out.println("\t\t4 - NÚMERO DE TELEMÓVEL");
 
                         do {
                             System.out.print("\tSELECIONE O CAMPO: ");
                             esc = scn.nextInt();
-                        } while (esc < 0 || esc > 5);
+                        } while (esc < 0 || esc > 4);
 
                         switch (esc) {
                             //EDIÇÃO DE PALAVRA PASS
@@ -254,31 +280,8 @@ public class Ficheiro {
                                 System.out.println("\tAS ALTERAÇÕES APENAS FICAM ATIVAS APÓS A APLICAÇÃO RENICIAR" + textoNormal);
                                 break;
                             }
-                            //EDIÇÃO DE NIF
-                            case 4:{
-                                Scanner sc1 = new Scanner(System.in);
-                                System.out.print(textoRoxo + "\tNOVO NIF: " + textoNormal);
-                                String NIF = sc1.nextLine();
-
-                                for(int i = 0; i< utilizadores.size(); i++) {
-                                    utilizadores.set(count-1, divLinha[0] + ":" + divLinha[1]+ ":" +  divLinha[2] + ":" +  divLinha[3] + ":" +  NIF + ":" +  divLinha[5] + ":" +  divLinha[6]);
-                                }
-
-                                FileWriter f = new FileWriter("registo.dat", false);
-                                Formatter formatter = new Formatter(f);
-                                for(int i = 0; i < utilizadores.size(); i ++) {
-                                    formatter.format((String) utilizadores.get(i) + "\n");
-                                    formatter.flush();
-                                }
-                                formatter.close();
-
-                                System.out.println(textoVerde + "\tNIF ALTERADO COM SUCESSO" + textoNormal);
-                                System.out.println(textoLaranja + "\t\t::ATENÇÃO::");
-                                System.out.println("\tAS ALTERAÇÕES APENAS FICAM ATIVAS APÓS A APLICAÇÃO RENICIAR" + textoNormal);
-                                break;
-                            }
                             //EDIÇÃO DE NUMERO DE TELEMOVEL
-                            case 5:{
+                            case 4:{
                                 Scanner sc1 = new Scanner(System.in);
                                 System.out.print(textoRoxo + "\tNOVO NÚMERO DE TELEMÓVEL: " + textoNormal);
                                 String nTel = sc1.nextLine();
@@ -307,7 +310,7 @@ public class Ficheiro {
                 }
             }while (flag == 0) ;
         }catch(Exception e){
-            System.out.println(textoVermelho + "Ficheiro não encontrado!" + textoNormal);
+            System.out.println(textoVermelho + "FICHEIRO NÃO ENCONTRADO!" + textoNormal);
             System.exit(0);
         }
     }
@@ -502,13 +505,49 @@ public class Ficheiro {
 
                 System.out.println(System.lineSeparator().repeat(2));
                 System.out.println(textoRoxo + "\t----- DADOS DO FUNCIONÁRIO -----" + textoNormal);
+                System.out.println(textoRoxo + "\t----- CÓDIGO TEMPORÁRIO: " + i + textoNormal);
                 System.out.println("\t\tUSERNAME - " + existeU.get(i).getUsername());
                 System.out.println("\t\tNOME - " +  existeU.get(i).getPrimeiroNome());
                 System.out.println("\t\tAPELIDO - " +  existeU.get(i).getApelido());
                 System.out.println("\t\tNIF - " +  existeU.get(i).getNIF());
                 System.out.println("\t\tNÚMERO DE TELEMÓVEL - " +  existeU.get(i).getnTel());
+
+                break;
             }
         }
     }
 
+    /*
+       LER REGISTO PELO NIF
+    */
+    public void listarU() throws FileNotFoundException {
+        String textoVermelho = "\033[31m";
+        String textoVerde = "\033[32m";
+        String textoAmarelo = "\033[93m";
+        String textoRoxo = "\033[95m";
+        String textoNormal = "\033[0m";
+        String textoLaranja = "\033[33m";
+
+        for(int i=0; i<existeU.size(); i++){
+            System.out.println(System.lineSeparator().repeat(2));
+            System.out.println(textoRoxo + "\t----- DADOS DOS UTILIZADORES -----" + textoNormal);
+            System.out.println("\t\tUSERNAME - " + existeU.get(i).getUsername());
+            System.out.println("\t\tNOME - " +  existeU.get(i).getPrimeiroNome());
+            System.out.println("\t\tAPELIDO - " +  existeU.get(i).getApelido());
+            System.out.println("\t\tNIF - " +  existeU.get(i).getNIF());
+            System.out.println("\t\tNÚMERO DE TELEMÓVEL - " +  existeU.get(i).getnTel());
+        }
+    }
+
+    /*
+       RETORNA O NOME ATRAVEZ DO NIF
+    */
+    public String devolveNome(String nif) throws FileNotFoundException {
+        for(int i=0; i<existeU.size(); i++){
+            if(existeU.get(i).getNIF().equals(nif)){
+                return existeU.get(i).getPrimeiroNome() + " " + existeU.get(i).getApelido();
+            }
+        }
+        return null;
+    }
 }

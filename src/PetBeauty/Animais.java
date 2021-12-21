@@ -71,6 +71,7 @@ public class Animais {
 
                 System.out.println(System.lineSeparator().repeat(2));
                 System.out.println(textoRoxo + "\t----- ANIMAL: " + existeA.get(i).getCodAnimal() + " -----" + textoNormal);
+                System.out.println(textoRoxo + "\t----- CÓDIGO RÁPIDO: " + i + " -----" + textoNormal);
                 System.out.println("\t\tNOME - " + existeA.get(i).getNome());
                 System.out.println("\t\tESPECIE - " + existeA.get(i).getEspecie());
                 System.out.println("\t\tNIF DO DONO - " + existeA.get(i).getNifDono());
@@ -124,5 +125,43 @@ public class Animais {
             System.out.println("FICHEIRO NÃO ENCONTRADO!");
 
         }
+    }
+
+    /*
+       RETORNA A ESPECIE ATRAVEZ DO CODIGO
+    */
+    public String devolveEspecie(String cod) throws FileNotFoundException {
+        String textoVermelho = "\033[31m";
+        String textoVerde = "\033[32m";
+        String textoAmarelo = "\033[93m";
+        String textoRoxo = "\033[95m";
+        String textoNormal = "\033[0m";
+        String textoLaranja = "\033[33m";
+
+        for(int i=0; i<existeA.size(); i++){
+            if(existeA.get(i).getCodAnimal().equals(cod)){
+                return existeA.get(i).getEspecie();
+            }
+        }
+        return null;
+    }
+
+    /*
+       RETORNA O NOME ATRAVEZ DO CODIGO
+    */
+    public String devolveNome(String cod) throws FileNotFoundException {
+        String textoVermelho = "\033[31m";
+        String textoVerde = "\033[32m";
+        String textoAmarelo = "\033[93m";
+        String textoRoxo = "\033[95m";
+        String textoNormal = "\033[0m";
+        String textoLaranja = "\033[33m";
+
+        for(int i=0; i<existeA.size(); i++){
+            if(existeA.get(i).getCodAnimal().equals(cod)){
+                return existeA.get(i).getNome();
+            }
+        }
+        return null;
     }
 }

@@ -6,7 +6,7 @@ import java.util.Scanner;
 public class DonoEmpresa extends Utilizador{
 
     public DonoEmpresa(String username, String password, String nome, String apelido, String NIF, String nTel, String tipo) {
-        super(username, password, nome, apelido, NIF, nTel, "0");
+        super(username, password, nome, apelido, NIF, nTel, "2");
     }
 
     /*
@@ -19,12 +19,18 @@ public class DonoEmpresa extends Utilizador{
         String textoRoxo = "\033[95m";
         String textoNormal = "\033[0m";
 
+        Ficheiro f = new Ficheiro();
+        f.importaU();
+
         Animais a = new Animais();
         a.importaAnimais();
 
         Empresas e = new Empresas();
         e.importaEmpresas();
         e.importaFuncionarios();
+
+        Marcacoes m = new Marcacoes();
+        m.importaMarcacoes();
 
         int op = 0, aux;
         Scanner sc = new Scanner(System.in);
@@ -92,6 +98,7 @@ public class DonoEmpresa extends Utilizador{
                     System.out.print(textoNormal);
 
                     e.lerFuncEmp(valor);
+
                     break;
                 }
 
@@ -110,7 +117,6 @@ public class DonoEmpresa extends Utilizador{
                         int valor = sc.nextInt();
                         System.out.print(textoNormal);
 
-                        Ficheiro f = new Ficheiro();
                         nifFuncionario = f.registarFuncionario();
 
                         if (!nifFuncionario.equals("1")){
@@ -118,6 +124,27 @@ public class DonoEmpresa extends Utilizador{
                         }else{
                             System.out.println(textoVermelho + "OCORREU UM ERRO!! " + textoNormal);
                         }
+                    }while (nifFuncionario.equals("1"));        //RETORNA, RETORNA ERRO
+
+                    break;
+                }
+                /*
+                    MOTRA TODAS AS CONSULTAS AGENDADAS
+                 */
+                case 7:{
+                    //LISTA TODAS AS EMPRESAS EXISTENTES
+                    e.listarEmpresas(getNIF());
+
+                    //ENTRA NO MODO ADICIONA FUNCIONARIO
+                    String nifFuncionario;
+                    do {
+                        System.out.println(System.lineSeparator().repeat(1));
+                        System.out.print( textoRoxo + "INDIQUE O CÓDIGO DA EMPRESA A QUAL DESEJA ASSOCIAR UM FUNCIONÁRIO: ");
+                        int valor = sc.nextInt();
+                        System.out.print(textoNormal);
+
+                        nifFuncionario = f.registarFuncionario();
+
                     }while (nifFuncionario.equals("1"));        //RETORNA, RETORNA ERRO
 
                     break;
