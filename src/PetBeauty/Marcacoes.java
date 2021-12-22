@@ -5,20 +5,11 @@ import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.*;
 
 public class Marcacoes {
     public static ArrayList<Consulta> existeC = new ArrayList<>();
-
-    /*
-         Conversor de datas
-     */
-    Date converterData(String data) throws ParseException {
-        SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy_HH-mm-ss");
-        Date date = formatter.parse(data);
-        return date;
-    }
+    ArrayList marcacoes = new ArrayList();
 
     /*
         IMPORTA TODA A INFORMAÇÃO DO FICHEIRO MARCACOES.DAT
@@ -105,7 +96,7 @@ public class Marcacoes {
     /*
         MOSTRA PEDIDOS DE CONSULTAS
      */
-    public void mostrarMarcacoesCliente(String nifC) throws FileNotFoundException {
+    public void mostrarMarcacoesCliente(String nifC) throws FileNotFoundException, ParseException {
         String textoVermelho = "\033[31m";
         String textoRoxo = "\033[95m";
         String textoVerde = "\033[32m";
@@ -120,7 +111,7 @@ public class Marcacoes {
 
         for (int i=0; i<existeC.size(); i++){
             if(existeC.get(i).getNIFDono().equals(nifC)){
-                if (existeC.get(i).getConfirmada().equals("0")){
+                if (existeC.get(i).getConfirmada().equals("0")&& existeC.get(i).getRealizada().equals("0") && existeC.get(i).getPaga().equals("0")){
                     nomeF = f.devolveNome(existeC.get(i).getNIFFuncionario());
 
                     especie = a.devolveEspecie(existeC.get(i).getCodAnimal());
@@ -129,6 +120,7 @@ public class Marcacoes {
                     System.out.println(System.lineSeparator().repeat(2));
                     System.out.println(textoRoxo + "\t----- DADOS DO PEDIDO DE CONSULTA -----" + textoNormal);
                     System.out.println("\t\tCÓDIGO - " + existeC.get(i).getCodigo());
+                    System.out.println("\t\tDATA - " + existeC.get(i).getData());
                     System.out.println("\t\tNOME DA EMPRESA - " +  e.devolverNomeEmp(existeC.get(i).getNIFEmpresa()));
                     System.out.println("\t\tNIF DA EMPRESA - " +  existeC.get(i).getNIFEmpresa());
                     System.out.println("\t\tNOME DO FUNCIONÁRIO - " +  nomeF);
@@ -139,7 +131,7 @@ public class Marcacoes {
 
                     valor++;
                 }
-                if (existeC.get(i).getConfirmada().equals("1") && existeC.get(i).getRealizada().equals("0")){
+                if (existeC.get(i).getConfirmada().equals("1") && existeC.get(i).getRealizada().equals("0") && existeC.get(i).getPaga().equals("0")){
                     nomeF = f.devolveNome(existeC.get(i).getNIFFuncionario());
 
                     especie = a.devolveEspecie(existeC.get(i).getCodAnimal());
@@ -148,6 +140,7 @@ public class Marcacoes {
                     System.out.println(System.lineSeparator().repeat(2));
                     System.out.println(textoRoxo + "\t----- DADOS DA CONSULTA (APROVADA) -----" + textoNormal);
                     System.out.println("\t\tCÓDIGO - " + existeC.get(i).getCodigo());
+                    System.out.println("\t\tDATA - " + existeC.get(i).getData());
                     System.out.println("\t\tNOME DA EMPRESA - " +  e.devolverNomeEmp(existeC.get(i).getNIFEmpresa()));
                     System.out.println("\t\tNIF DA EMPRESA - " +  existeC.get(i).getNIFEmpresa());
                     System.out.println("\t\tNOME DO FUNCIONÁRIO - " +  nomeF);
@@ -167,6 +160,7 @@ public class Marcacoes {
                     System.out.println(System.lineSeparator().repeat(2));
                     System.out.println(textoRoxo + "\t----- DADOS DA CONSULTA (EM PAGAMENTO) -----" + textoNormal);
                     System.out.println("\t\tCÓDIGO - " + existeC.get(i).getCodigo());
+                    System.out.println("\t\tDATA - " + existeC.get(i).getData());
                     System.out.println("\t\tNOME DA EMPRESA - " +  e.devolverNomeEmp(existeC.get(i).getNIFEmpresa()));
                     System.out.println("\t\tNIF DA EMPRESA - " +  existeC.get(i).getNIFEmpresa());
                     System.out.println("\t\tNOME DO FUNCIONÁRIO - " +  nomeF);
@@ -187,6 +181,7 @@ public class Marcacoes {
                     System.out.println(System.lineSeparator().repeat(2));
                     System.out.println(textoRoxo + "\t----- DADOS DA CONSULTA (REALIZADA) -----" + textoNormal);
                     System.out.println("\t\tCÓDIGO - " + existeC.get(i).getCodigo());
+                    System.out.println("\t\tDATA - " + existeC.get(i).getData());
                     System.out.println("\t\tNOME DA EMPRESA - " +  e.devolverNomeEmp(existeC.get(i).getNIFEmpresa()));
                     System.out.println("\t\tNIF DA EMPRESA - " +  existeC.get(i).getNIFEmpresa());
                     System.out.println("\t\tNOME DO FUNCIONÁRIO - " +  nomeF);
@@ -204,6 +199,95 @@ public class Marcacoes {
         if (valor==0){
             System.out.println(System.lineSeparator().repeat(2));
             System.out.println(textoVermelho + "NÃO FORAM ENCONTRADOS PEDIDOS MARCAÇÕES ASSOCIADAS A SI!" + textoNormal);
+        }
+    }
+
+    /*
+       PAGAR CONSULTAS
+    */
+    public void pagarConsulta(String nifC) throws IOException, ParseException {
+        String textoVermelho = "\033[31m";
+        String textoRoxo = "\033[95m";
+        String textoVerde = "\033[32m";
+        String textoNormal = "\033[0m";
+        int valor = 0, valorP=0;
+        String nomeF = null;
+        String especie = null;
+        String nomeA = null;
+        Ficheiro f = new Ficheiro();
+        Animais a = new Animais();
+        Empresas e = new Empresas();
+        Scanner sc = new Scanner(System.in);
+
+        Scanner s = new Scanner(new File("marcacoes.dat"));
+        while (s.hasNext()){
+            marcacoes.add(s.next());
+        }
+        s.close();
+
+        for (int i=0; i<existeC.size(); i++){
+            if(existeC.get(i).getNIFDono().equals(nifC)){
+                if (existeC.get(i).getConfirmada().equals("1") && existeC.get(i).getRealizada().equals("1") && existeC.get(i).getPaga().equals("0")){
+                    nomeF = f.devolveNome(existeC.get(i).getNIFFuncionario());
+
+                    especie = a.devolveEspecie(existeC.get(i).getCodAnimal());
+                    nomeA = a.devolveNome(existeC.get(i).getCodAnimal());
+
+                    System.out.println(System.lineSeparator().repeat(2));
+                    System.out.println(textoRoxo + "\t----- DADOS DA CONSULTA (EM PAGAMENTO) -----" + textoNormal);
+                    System.out.println(textoRoxo + "\t----- CÓDIGO RÁPIDO " + i + " -----" + textoNormal);
+                    System.out.println("\t\tCÓDIGO - " + existeC.get(i).getCodigo());
+                    System.out.println("\t\tDATA - " + existeC.get(i).getData());
+                    System.out.println("\t\tNOME DA EMPRESA - " +  e.devolverNomeEmp(existeC.get(i).getNIFEmpresa()));
+                    System.out.println("\t\tNIF DA EMPRESA - " +  existeC.get(i).getNIFEmpresa());
+                    System.out.println("\t\tNOME DO FUNCIONÁRIO - " +  nomeF);
+                    System.out.println("\t\tESPECIE DO ANIMAL - " + especie);
+                    System.out.println("\t\tNOME DO ANIMAL - " +  nomeA);
+                    System.out.println("\t\tCÓDIGO ANIMAL - " +  existeC.get(i).getCodAnimal());
+                    System.out.println("\t\tVALOR A PAGAR - " +  existeC.get(i).getValor() + " €");
+                    System.out.println("\t\tESTADO - CONSULTA REALIZADA / A AGUARDAR PAGAMENTO");
+
+                    valor++;
+                }
+            }
+        }
+
+        if (valor==0){
+            System.out.println(System.lineSeparator().repeat(2));
+            System.out.println(textoVermelho + "NÃO FORAM ENCONTRADOS MARCAÇÕES DE PAGAMENTOS PENDENTES!" + textoNormal);
+        }else{
+
+            do {
+                System.out.println(System.lineSeparator().repeat(1));
+                System.out.print( textoRoxo + "INDIQUE O CÓDIGO RÁPIDO DA CONSULTA QUE DESEJA PAGAR: ");
+                valorP = sc.nextInt();
+                System.out.print(textoNormal);
+            }while(valorP<existeC.size() && valorP>existeC.size());
+
+            for (int i=0; i<existeC.size(); i++){
+                if (i==valorP){
+                    System.out.println(System.lineSeparator().repeat(1));
+                    System.out.println( textoRoxo + "O PAGAMENTO DA CONSULTA CÓDIGO: " + existeC.get(i).getCodigo() + ", com o valor de " + existeC.get(i).getValor() + "€. ESTÁ A SER PROCESSADA" +textoNormal );
+
+
+                    for(int j = 0; j< marcacoes.size(); i++) {
+                        marcacoes.set(i, existeC.get(i).getCodigo() + ":" + existeC.get(i).getData() + ":" +  existeC.get(i).getNIFEmpresa() + ":" +  existeC.get(i).getNIFFuncionario() + ":" +  existeC.get(i).getNIFDono() + ":" +  existeC.get(i).getCodAnimal() + ":" +  existeC.get(i).getConfirmada() + ":" + existeC.get(i).getValor() + ":" + existeC.get(i).getRealizada() + "1");
+                    }
+
+                    FileWriter file = new FileWriter("marcacoes.dat", false);
+                    Formatter formatter = new Formatter(file);
+                    for(int w = 0; w < marcacoes.size(); i ++) {
+                        formatter.format((String) marcacoes.get(i) + "\n");
+                        formatter.flush();
+                    }
+                    formatter.close();
+
+                    System.out.println(System.lineSeparator().repeat(2));
+                    System.out.println(textoVerde + "A CONSULTA FOI PAGA COM SUCESSO!" + textoNormal);
+
+                }
+            }
+
         }
     }
 
@@ -226,7 +310,7 @@ public class Marcacoes {
         Animais a = new Animais();
         Ficheiro f = new Ficheiro();
 
-        System.out.print( textoRoxo + "INDIQUE A DATA EM QUE DESEJA MARCAR CONSULTA NO FORMATO dd-MM-yyyy_HH-mm-ss: " + textoNormal);
+        System.out.print( textoRoxo + "INDIQUE A DATA EM QUE DESEJA MARCAR CONSULTA NO FORMATO dd-mm-aaaa hh:mm: " + textoNormal);
         dataAux = sc.nextLine();
 
         if (e.existeE.size()==0 || a.existeA.size()==0 || e.existeF.size()==0){
@@ -310,6 +394,7 @@ public class Marcacoes {
 
                 if(formatter != null){
 
+                    existeC.add(new Consulta(codConsulta, dataAux, nifEmpresa, nifFuncionario, nif, codigoAnimal, "0", "0", "0", "0"));
                     System.out.println(System.lineSeparator().repeat(2));
                     System.out.println(textoVerde + "\n\tA CONSULTA FOI REGISTADO COM O CÓDIGO: " + codConsulta + textoNormal);
                     System.out.println(System.lineSeparator().repeat(1));

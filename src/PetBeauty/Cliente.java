@@ -104,6 +104,14 @@ public class Cliente extends Utilizador{
                     break;
                 }
 
+                /*
+                    PAGAR MARCAÇÕES
+                 */
+                case 7:{
+                    m.pagarConsulta(getNIF());
+                    break;
+                }
+
                 default:{
                     System.out.println(textoVerde + "A SAIR ..." + textoNormal);
                     System.exit(0);
