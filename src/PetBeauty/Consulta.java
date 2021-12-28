@@ -5,6 +5,7 @@ import java.util.*;
 public class Consulta {
     private String codigo;
     private String data;
+    private String hora;
     private String NIFEmpresa;
     private String NIFFuncionario;
     private String NIFDono;
@@ -14,11 +15,12 @@ public class Consulta {
     private String realizada;
     private String paga;
 
-    public Consulta(String codigo, String data, String NIFEmpresa, String NIFFuncionario, String NIFDono,
+    public Consulta(String codigo, String data, String hora, String NIFEmpresa, String NIFFuncionario, String NIFDono,
                     String codAnimal, String confirmada, String valor, String realizada, String paga){
 
         this.codigo=codigo;
         this.data=data;
+        this.hora=hora;
         this.NIFEmpresa=NIFEmpresa;
         this.NIFFuncionario=NIFFuncionario;
         this.NIFDono=NIFDono;
@@ -27,6 +29,14 @@ public class Consulta {
         this.valor=valor;
         this.realizada=realizada;
         this.paga=paga;
+    }
+
+    public String getHora() {
+        return hora;
+    }
+
+    public void setHora(String hora) {
+        this.hora = hora;
     }
 
     public String getCodigo() {

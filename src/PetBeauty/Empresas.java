@@ -27,7 +27,7 @@ public class Empresas {
          */
         if(!f.exists()){
             formatter = new Formatter(f);
-            formatter.format("0:0:0:0:0:0\n");
+            formatter.format("0:0:0:0:0:0:0:1\n");
             formatter.flush();
             formatter.close();
         }
@@ -41,7 +41,7 @@ public class Empresas {
                 do {
                     linha = sc.nextLine();
                     divLinha = linha.split(":");
-                    existeE.add(new Empresa(divLinha[0].trim(), divLinha[1].trim(), divLinha[2].trim(), divLinha[3].trim(), divLinha[4].trim(), divLinha[5].trim()));
+                    existeE.add(new Empresa(divLinha[0].trim(), divLinha[1].trim(), divLinha[2].trim(), divLinha[3].trim(), divLinha[4].trim(), divLinha[5].trim(), divLinha[6].trim(), divLinha[7].trim()));
 
                 } while (sc.hasNextLine());
 
@@ -70,7 +70,7 @@ public class Empresas {
             do{
                 linha = sc.nextLine();
                 divLinha = linha.split(":");
-                existeE.add(new Empresa(divLinha[0].trim(), divLinha[1].trim(), divLinha[2].trim(), divLinha[3].trim(), divLinha[4].trim(), divLinha[5].trim()));
+                existeE.add(new Empresa(divLinha[0].trim(), divLinha[1].trim(), divLinha[2].trim(), divLinha[3].trim(), divLinha[4].trim(), divLinha[5].trim(), divLinha[6].trim(), divLinha[7].trim()));
 
                 if(nif.equals(divLinha[4])){
                     copia = 1;
@@ -101,7 +101,7 @@ public class Empresas {
         FileWriter registar = new FileWriter("empresas.dat", true);
         Scanner sc = new Scanner(System.in);
         Formatter formatter;
-        String nif, nome, morada, localidade, nTel, escolha;
+        String nif, nome, morada, localidade, especialidade, nTel, escolha;
         int copia=0, op, erro1=0, erro2=0;
 
         try{
@@ -128,6 +128,8 @@ public class Empresas {
             morada = sc.nextLine();
             System.out.print("LOCALIDADE: ");
             localidade = sc.nextLine();
+            System.out.print("ESPECIALIDADE(S): ");
+            especialidade = sc.nextLine();
 
             do {
                 System.out.print("NÚMERO DE TELEMÓVEL: ");
@@ -148,8 +150,10 @@ public class Empresas {
             formatter.format(nome + ":");
             formatter.format(morada + ":");
             formatter.format(localidade + ":");
+            formatter.format(especialidade + ":");
             formatter.format(nTel + ":");
-            formatter.format(nifD + "\n");
+            formatter.format(nifD + ":");
+            formatter.format("0" + "\n");
             formatter.flush();
             formatter.close();
 
@@ -163,6 +167,7 @@ public class Empresas {
                 System.out.println("\t\tNIF - " + nif);
                 System.out.println("\t\tMORADA - " + morada);
                 System.out.println("\t\tLOCALIDADE - " + localidade);
+                System.out.println("\t\tESPECILIDADE - " + localidade);
                 System.out.println("\t\tNÚMERO DE TELEMÓVEL - " + nTel);
                 System.out.println("\t\tNIF DO PROPRIETÁRIO - " + nifD);
 
@@ -193,14 +198,23 @@ public class Empresas {
         for(int i=0; i<existeE.size(); i++) {
             if(nifD.equals(existeE.get(i).getNifDono())){
 
+                String txt;
+                if (existeE.get(i).getAtivo().equals("0")){
+                    txt="EMPRESA ATIVA";
+                }else{
+                    txt="EMPRESA BLOQUEADA POR OREDEM DE ADMINISTRADOR";
+                }
+
                 System.out.println(System.lineSeparator().repeat(2));
                 System.out.println(textoRoxo + "\t----- EMPRESA: " + existeE.get(i).getNifEmpresa() + " -----" + textoNormal);
                 System.out.println(textoRoxo + "\t----- CÓDIGO DE EMPRESA: " + i + " -----" + textoNormal);
                 System.out.println("\t\tNOME - " + existeE.get(i).getNome());
                 System.out.println("\t\tMORADA - " + existeE.get(i).getMorada());
                 System.out.println("\t\tLOCALIDADE - " + existeE.get(i).getLocalidade());
+                System.out.println("\t\tLOCALIDADE - " + existeE.get(i).getEspecialidade());
                 System.out.println("\t\tNÚMERO DE TELEMÓVEL - " + existeE.get(i).getnTel());
                 System.out.println("\t\tNIF DO DONO - " + existeE.get(i).getNifDono());
+                System.out.println("\t\tESTADO - " + txt);
                 count++;
             }
         }
@@ -225,7 +239,7 @@ public class Empresas {
          */
         if(!f.exists()){
             formatter = new Formatter(f);
-            formatter.format("0:0:0\n");
+            formatter.format("0:0:1\n");
             formatter.flush();
             formatter.close();
         }
@@ -274,7 +288,7 @@ public class Empresas {
             formatter = new Formatter(associar);
             formatter.format(nifF + ":");
             formatter.format(nifEmpresa + ":");
-            formatter.format(1 + "\n");
+            formatter.format(0 + "\n");
             formatter.flush();
             formatter.close();
 
@@ -323,7 +337,7 @@ public class Empresas {
                 nifF=existeF.get(i).getNifFuncionario();
                 String despedido = existeF.get(i).getAtivo();
 
-                if (despedido.equals("1")){
+                if (despedido.equals("0")){
                     txt = " A TRABALHAR ";
                 }else{
                     txt = " DESPEDIDO ";
@@ -350,17 +364,26 @@ public class Empresas {
         System.out.println(textoRoxo + "\t\t TODAS AS EMPRESAS:" + textoNormal);
 
         for(int i=0; i<existeE.size(); i++) {
+            String txt;
+            if (existeE.get(i).getAtivo().equals("0")){
+                txt="EMPRESA ATIVA";
+            }else{
+                txt="EMPRESA BLOQUEADA POR ORDEM DE ADMINISTRADOR";
+            }
+
             System.out.println(System.lineSeparator().repeat(2));
             System.out.println(textoRoxo + "\t----- EMPRESA: " + existeE.get(i).getNifEmpresa() + " -----" + textoNormal);
             System.out.println(textoRoxo + "\t----- CÓDIGO DE EMPRESA: " + i + " -----" + textoNormal);
             System.out.println("\t\tNOME - " + existeE.get(i).getNome());
             System.out.println("\t\tMORADA - " + existeE.get(i).getMorada());
             System.out.println("\t\tLOCALIDADE - " + existeE.get(i).getLocalidade());
+            System.out.println("\t\tESPECIALIDADE - " + existeE.get(i).getEspecialidade());
             System.out.println("\t\tNÚMERO DE TELEMÓVEL - " + existeE.get(i).getnTel());
+            System.out.println("\t\tESTADO - " + txt);
             count++;
         }
         if(count==0){
-            System.out.println(textoVermelho + "\t\t NÃO EXISTEM EMPRESAS REGISTADOS" + textoNormal);
+            System.out.println(textoVermelho + "\t\t NÃO EXISTEM EMPRESAS REGISTADOS" + count + textoNormal);
         }
 
     }

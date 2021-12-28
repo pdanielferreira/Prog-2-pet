@@ -33,6 +33,7 @@ public class Cliente extends Utilizador{
 
         Marcacoes m = new Marcacoes();
         m.importaMarcacoes();
+        m.importaExtra();
 
         int op = 0;
         Scanner sc = new Scanner(System.in);

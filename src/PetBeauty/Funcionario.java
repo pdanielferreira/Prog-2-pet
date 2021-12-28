@@ -1,6 +1,7 @@
 package PetBeauty;
 
 import java.io.IOException;
+import java.text.ParseException;
 import java.util.Scanner;
 
 public class Funcionario extends Utilizador{
@@ -11,7 +12,7 @@ public class Funcionario extends Utilizador{
     /*
         MENU DO FUNCIONÁRIO
      */
-    public void menuFuncionario() throws IOException {
+    public void menuFuncionario() throws IOException, ParseException {
         String textoVermelho = "\033[31m";
         String textoVerde = "\033[32m";
         String textoAmarelo = "\033[93m";
@@ -30,6 +31,7 @@ public class Funcionario extends Utilizador{
 
         Marcacoes m = new Marcacoes();
         m.importaMarcacoes();
+        m.importaExtra();
 
         int op = 0, aux;
         Scanner sc = new Scanner(System.in);
@@ -39,10 +41,9 @@ public class Funcionario extends Utilizador{
             System.out.println("\t\t1 - VER PERFIL");
             System.out.println("\t\t2 - EDITAR PERFIL");
             System.out.println("\t\t3 - VER CONSULTAS");
-            System.out.println("\t\t4 - CONFIMAR CONSULTAS");
-            System.out.println("\t\t5 - ACRESENTAR INFORMAÇÃO NAS CONSULTAS");
-            System.out.println("\t\t6 - CRIAR FUNCIONÁRIOS");
-            System.out.println("\t\t7 - VER CONSULTAS AGENDADAS \n");
+            System.out.println("\t\t4 - CONFIMAR PEDIDOS DE CONSULTA");
+            System.out.println("\t\t5 - MARCAR COMO REALIZADA");
+            System.out.println("\t\t6 - VER CONSULTAS AGENDADAS \n");
             System.out.println("\t\t0 - SAIR" + textoNormal);
 
             do{
@@ -77,17 +78,17 @@ public class Funcionario extends Utilizador{
                 }
 
                 /*
-
+                    CONFIRMAR CONSULTAS
                  */
                 case 4:{
-
+                    m.confirmarConsulta(getNIF());
                     break;
                 }
                 /*
-
+                    MARCAR COMO REALIZADA
                  */
                 case 5:{
-
+                    m.marcarRealizadaConsulta(getNIF());
                     break;
                 }
 
@@ -95,14 +96,7 @@ public class Funcionario extends Utilizador{
 
                  */
                 case 6:{
-
-                    break;
-                }
-                /*
-
-                 */
-                case 7:{
-
+                    m.mostrarConsultasAgendadas(getNIF());
                     break;
                 }
                 default:{

@@ -9,6 +9,7 @@ import java.util.*;
 
 public class Marcacoes {
     public static ArrayList<Consulta> existeC = new ArrayList<>();
+    public static ArrayList<ExtrasConsulta> existeExtra = new ArrayList<>();
     ArrayList marcacoes = new ArrayList();
 
     /*
@@ -26,7 +27,7 @@ public class Marcacoes {
          */
         if(!f.exists()){
             formatter = new Formatter(f);
-            formatter.format("0:0:0:0:0:0:0:0:0:0\n");
+            formatter.format("0:0:0:0:0:0:0:0:0:0:0\n");
             formatter.flush();
             formatter.close();
         }
@@ -40,13 +41,54 @@ public class Marcacoes {
                 do {
                     linha = sc.nextLine();
                     divLinha = linha.split(":");
-                    existeC.add(new Consulta(divLinha[0].trim(), divLinha[1].trim(), divLinha[2].trim(), divLinha[3].trim(), divLinha[4].trim(), divLinha[5].trim(), divLinha[6].trim(), divLinha[7].trim(), divLinha[8].trim(), divLinha[9].trim()));
+                    existeC.add(new Consulta(divLinha[0].trim(), divLinha[1].trim(), divLinha[2].trim(), divLinha[3].trim(), divLinha[4].trim(), divLinha[5].trim(), divLinha[6].trim(), divLinha[7].trim(), divLinha[8].trim(), divLinha[9].trim(), divLinha[10].trim()));
 
                 } while (sc.hasNextLine());
 
 
             } catch (Exception e) {
                 System.out.println(textoVermelho + "FICHEIRO COM DADOS DE CONSULTAS NÃO ENCONTRADO!" + textoNormal);
+                System.exit(0);
+            }
+        }
+    }
+
+    /*
+        IMPORTA TODA A INFORMAÇÃO DO FICHEIRO EXTRAS.DAT
+     */
+    public void importaExtra() throws FileNotFoundException {
+        String textoVermelho = "\033[31m";
+        String textoVerde = "\033[32m";
+        String textoNormal = "\033[0m";
+
+        File f = new File("extras.dat");
+        Formatter formatter;
+        /*
+            Caso não exista, o ficheiro
+         */
+        if(!f.exists()){
+            formatter = new Formatter(f);
+            formatter.format("0:0:0\n");
+            formatter.flush();
+            formatter.close();
+        }
+        else {
+            Scanner scn = new Scanner(System.in);
+            try {
+
+                String linha;
+                String[] divLinha;
+                Scanner sc = new Scanner(new File("extras.dat"));
+                do {
+                    linha = sc.nextLine();
+                    divLinha = linha.split(":");
+                    existeExtra.add(new ExtrasConsulta(divLinha[0].trim(), divLinha[1].trim(), divLinha[2].trim()));
+
+                } while (sc.hasNextLine());
+
+
+            } catch (Exception e) {
+                System.out.println(textoVermelho + "FICHEIRO COM DADOS DE EXTRAS NÃO ENCONTRADO!" + textoNormal);
                 System.exit(0);
             }
         }
@@ -76,7 +118,10 @@ public class Marcacoes {
 
                 System.out.println(System.lineSeparator().repeat(2));
                 System.out.println(textoRoxo + "\t----- DADOS DO PEDIDO DE CONSULTA -----" + textoNormal);
+                System.out.println(textoRoxo + "\t----- CÓDIGO RÁPIDO: " + i + " -----" + textoNormal);
                 System.out.println("\t\tCÓDIGO - " + existeC.get(i).getCodigo());
+                System.out.println("\t\tDATA - " + existeC.get(i).getData());
+                System.out.println("\t\tHORA - " + existeC.get(i).getHora());
                 System.out.println("\t\tNOME DO DONO - " +  nomeD);
                 System.out.println("\t\tESPECIE DO ANIMAL - " + especie);
                 System.out.println("\t\tNOME DO ANIMAL - " +  nomeA);
@@ -101,7 +146,7 @@ public class Marcacoes {
         String textoRoxo = "\033[95m";
         String textoVerde = "\033[32m";
         String textoNormal = "\033[0m";
-        int valor = 0;
+        int valor = 0, vExtras=0;
         String nomeF = null;
         String especie = null;
         String nomeA = null;
@@ -121,6 +166,7 @@ public class Marcacoes {
                     System.out.println(textoRoxo + "\t----- DADOS DO PEDIDO DE CONSULTA -----" + textoNormal);
                     System.out.println("\t\tCÓDIGO - " + existeC.get(i).getCodigo());
                     System.out.println("\t\tDATA - " + existeC.get(i).getData());
+                    System.out.println("\t\tHORA - " + existeC.get(i).getHora());
                     System.out.println("\t\tNOME DA EMPRESA - " +  e.devolverNomeEmp(existeC.get(i).getNIFEmpresa()));
                     System.out.println("\t\tNIF DA EMPRESA - " +  existeC.get(i).getNIFEmpresa());
                     System.out.println("\t\tNOME DO FUNCIONÁRIO - " +  nomeF);
@@ -141,6 +187,7 @@ public class Marcacoes {
                     System.out.println(textoRoxo + "\t----- DADOS DA CONSULTA (APROVADA) -----" + textoNormal);
                     System.out.println("\t\tCÓDIGO - " + existeC.get(i).getCodigo());
                     System.out.println("\t\tDATA - " + existeC.get(i).getData());
+                    System.out.println("\t\tHORA - " + existeC.get(i).getHora());
                     System.out.println("\t\tNOME DA EMPRESA - " +  e.devolverNomeEmp(existeC.get(i).getNIFEmpresa()));
                     System.out.println("\t\tNIF DA EMPRESA - " +  existeC.get(i).getNIFEmpresa());
                     System.out.println("\t\tNOME DO FUNCIONÁRIO - " +  nomeF);
@@ -161,6 +208,7 @@ public class Marcacoes {
                     System.out.println(textoRoxo + "\t----- DADOS DA CONSULTA (EM PAGAMENTO) -----" + textoNormal);
                     System.out.println("\t\tCÓDIGO - " + existeC.get(i).getCodigo());
                     System.out.println("\t\tDATA - " + existeC.get(i).getData());
+                    System.out.println("\t\tHORA - " + existeC.get(i).getHora());
                     System.out.println("\t\tNOME DA EMPRESA - " +  e.devolverNomeEmp(existeC.get(i).getNIFEmpresa()));
                     System.out.println("\t\tNIF DA EMPRESA - " +  existeC.get(i).getNIFEmpresa());
                     System.out.println("\t\tNOME DO FUNCIONÁRIO - " +  nomeF);
@@ -170,7 +218,20 @@ public class Marcacoes {
                     System.out.println("\t\tVALOR A PAGAR - " +  existeC.get(i).getValor() + " €");
                     System.out.println("\t\tESTADO - CONSULTA REALIZADA / A AGUARDAR PAGAMENTO");
 
-                    valor++;
+                    System.out.println(System.lineSeparator().repeat(2));
+                    System.out.println(textoRoxo + "\t----- DADOS DOS EXTRAS ADICIONADOS -----" + textoNormal);
+
+                    for(int x=0; x<existeExtra.size(); x++){
+                        if (existeExtra.get(x).getCodConsulta().equals(existeC.get(i).getCodigo())){
+                            System.out.println("\tNOME - " + existeExtra.get(x).getDesc());
+                            System.out.println("\tVALOR - " + existeExtra.get(x).getValor() + "€");
+                            vExtras++;
+                        }
+                    }
+
+                    if (vExtras==0){
+                        System.out.println(textoRoxo + "\t----- NÃO EXISTEM EXTRAS NESTA CONSULTA -----" + textoNormal);
+                    }
                 }
                 if (existeC.get(i).getConfirmada().equals("1") && existeC.get(i).getRealizada().equals("1") && existeC.get(i).getPaga().equals("1")){
                     nomeF = f.devolveNome(existeC.get(i).getNIFFuncionario());
@@ -182,6 +243,7 @@ public class Marcacoes {
                     System.out.println(textoRoxo + "\t----- DADOS DA CONSULTA (REALIZADA) -----" + textoNormal);
                     System.out.println("\t\tCÓDIGO - " + existeC.get(i).getCodigo());
                     System.out.println("\t\tDATA - " + existeC.get(i).getData());
+                    System.out.println("\t\tHORA - " + existeC.get(i).getHora());
                     System.out.println("\t\tNOME DA EMPRESA - " +  e.devolverNomeEmp(existeC.get(i).getNIFEmpresa()));
                     System.out.println("\t\tNIF DA EMPRESA - " +  existeC.get(i).getNIFEmpresa());
                     System.out.println("\t\tNOME DO FUNCIONÁRIO - " +  nomeF);
@@ -190,6 +252,21 @@ public class Marcacoes {
                     System.out.println("\t\tCÓDIGO ANIMAL - " +  existeC.get(i).getCodAnimal());
                     System.out.println("\t\tVALOR A PAGO - " +  existeC.get(i).getValor() + " €");
                     System.out.println("\t\tESTADO - CONSULTA REALIZADA / PAGA");
+
+                    System.out.println(System.lineSeparator().repeat(2));
+                    System.out.println(textoRoxo + "\t----- DADOS DOS EXTRAS ADICIONADOS -----");
+                    System.out.println("\t       NOME             VALOR     " + textoNormal);
+
+                    for(int x=0; x<existeExtra.size(); x++){
+                        if (existeExtra.get(x).getCodConsulta().equals(existeC.get(i).getCodigo())){
+                        System.out.println("\t  " + existeExtra.get(x).getDesc() + "            " + existeExtra.get(x).getValor() + "€   ");
+                            vExtras++;
+                        }
+                    }
+
+                    if (vExtras==0){
+                        System.out.println(textoRoxo + "\t|      NÃO EXISTEM EXTRAS NESTA CONSULTA      |" + textoNormal);
+                    }
 
                     valor++;
                 }
@@ -218,6 +295,8 @@ public class Marcacoes {
         Animais a = new Animais();
         Empresas e = new Empresas();
         Scanner sc = new Scanner(System.in);
+        String[] divLinha;
+        String linha;
 
         Scanner s = new Scanner(new File("marcacoes.dat"));
         while (s.hasNext()){
@@ -238,6 +317,7 @@ public class Marcacoes {
                     System.out.println(textoRoxo + "\t----- CÓDIGO RÁPIDO " + i + " -----" + textoNormal);
                     System.out.println("\t\tCÓDIGO - " + existeC.get(i).getCodigo());
                     System.out.println("\t\tDATA - " + existeC.get(i).getData());
+                    System.out.println("\t\tHORA - " + existeC.get(i).getHora());
                     System.out.println("\t\tNOME DA EMPRESA - " +  e.devolverNomeEmp(existeC.get(i).getNIFEmpresa()));
                     System.out.println("\t\tNIF DA EMPRESA - " +  existeC.get(i).getNIFEmpresa());
                     System.out.println("\t\tNOME DO FUNCIONÁRIO - " +  nomeF);
@@ -269,15 +349,12 @@ public class Marcacoes {
                     System.out.println(System.lineSeparator().repeat(1));
                     System.out.println( textoRoxo + "O PAGAMENTO DA CONSULTA CÓDIGO: " + existeC.get(i).getCodigo() + ", com o valor de " + existeC.get(i).getValor() + "€. ESTÁ A SER PROCESSADA" +textoNormal );
 
-
-                    for(int j = 0; j< marcacoes.size(); i++) {
-                        marcacoes.set(i, existeC.get(i).getCodigo() + ":" + existeC.get(i).getData() + ":" +  existeC.get(i).getNIFEmpresa() + ":" +  existeC.get(i).getNIFFuncionario() + ":" +  existeC.get(i).getNIFDono() + ":" +  existeC.get(i).getCodAnimal() + ":" +  existeC.get(i).getConfirmada() + ":" + existeC.get(i).getValor() + ":" + existeC.get(i).getRealizada() + "1");
-                    }
+                    marcacoes.set(i, existeC.get(i).getCodigo() + ":" + existeC.get(i).getData() + ":" + existeC.get(i).getHora() + ":" +  existeC.get(i).getNIFEmpresa() + ":" +  existeC.get(i).getNIFFuncionario() + ":" +  existeC.get(i).getNIFDono() + ":" +  existeC.get(i).getCodAnimal() + ":" +  existeC.get(i).getConfirmada() + ":" + existeC.get(i).getValor() + ":" + existeC.get(i).getRealizada() + ":" + "1");
 
                     FileWriter file = new FileWriter("marcacoes.dat", false);
                     Formatter formatter = new Formatter(file);
-                    for(int w = 0; w < marcacoes.size(); i ++) {
-                        formatter.format((String) marcacoes.get(i) + "\n");
+                    for(int w = 0; w < marcacoes.size(); w ++) {
+                        formatter.format((String) marcacoes.get(w) + "\n");
                         formatter.flush();
                     }
                     formatter.close();
@@ -285,9 +362,129 @@ public class Marcacoes {
                     System.out.println(System.lineSeparator().repeat(2));
                     System.out.println(textoVerde + "A CONSULTA FOI PAGA COM SUCESSO!" + textoNormal);
 
+                    System.out.println(System.lineSeparator().repeat(2));
+                    System.out.println(textoVerde + "\t\tA INFORMAÇÃO DE PAGAMENTO SÓ FICA VÁLIDA APÓS RENICIAR" + textoNormal);
+
                 }
             }
 
+        }
+    }
+
+    /*
+       confirmar CONSULTAS
+    */
+    public void confirmarConsulta(String nifF) throws IOException, ParseException {
+        String textoVermelho = "\033[31m";
+        String textoRoxo = "\033[95m";
+        String textoVerde = "\033[32m";
+        String textoNormal = "\033[0m";
+        int valor = 0, valorP=0, valor2=0;
+        String nomeF = null;
+        String especie = null;
+        String nomeA = null;
+        Ficheiro f = new Ficheiro();
+        Animais a = new Animais();
+        Empresas e = new Empresas();
+        Scanner sc = new Scanner(System.in);
+        String[] divLinha;
+        String linha;
+
+        Scanner s = new Scanner(new File("marcacoes.dat"));
+        while (s.hasNext()){
+            marcacoes.add(s.next());
+        }
+        s.close();
+
+        for (int i=0; i<existeC.size(); i++){
+            if(existeC.get(i).getNIFFuncionario().equals(nifF)){
+                if (existeC.get(i).getConfirmada().equals("0")){
+                    nomeF = f.devolveNome(existeC.get(i).getNIFDono());
+
+                    especie = a.devolveEspecie(existeC.get(i).getCodAnimal());
+                    nomeA = a.devolveNome(existeC.get(i).getCodAnimal());
+
+                    System.out.println(System.lineSeparator().repeat(2));
+                    System.out.println(textoRoxo + "\t----- DADOS DO PEDIDO DE CONSULTA -----" + textoNormal);
+                    System.out.println(textoRoxo + "\t----- CÓDIGO RÁPIDO " + i + " -----" + textoNormal);
+                    System.out.println("\t\tCÓDIGO - " + existeC.get(i).getCodigo());
+                    System.out.println("\t\tDATA - " + existeC.get(i).getData());
+                    System.out.println("\t\tHORA - " + existeC.get(i).getHora());
+                    System.out.println("\t\tNOME DO NOME - " + nomeF);
+                    System.out.println("\t\tESPECIE DO ANIMAL - " + especie);
+                    System.out.println("\t\tNOME DO ANIMAL - " +  nomeA);
+                    System.out.println("\t\tCÓDIGO ANIMAL - " +  existeC.get(i).getCodAnimal());
+
+                    valor++;
+                }
+            }
+        }
+
+        if (valor==0){
+            System.out.println(System.lineSeparator().repeat(2));
+            System.out.println(textoVermelho + "NÃO FORAM ENCONTRADAS MARCAÇÕES PENDENTES!" + textoNormal);
+        }else{
+
+            do {
+                System.out.println(System.lineSeparator().repeat(1));
+                System.out.print( textoRoxo + "INDIQUE O CÓDIGO RÁPIDO DA CONSULTA QUE DESEJA EFETUAR : ");
+                valorP = sc.nextInt();
+                System.out.print(textoNormal);
+            }while(valorP<existeC.size() && valorP>existeC.size());
+
+            do {
+                System.out.println(System.lineSeparator().repeat(1));
+                System.out.println( textoRoxo + "\t\t--   MENU    --");
+                System.out.println( "\t\t1 - CONFIRMAR PEDIDO DE CONSULTA");
+                System.out.println( "\t\t2 - ANULAR PEDIDO DE CONSULTA");
+                System.out.println(System.lineSeparator().repeat(2));
+
+                System.out.print( "\tINDIQUE A SUA OPÇÃO:");
+                valor2 = sc.nextInt();
+                System.out.print(textoNormal);
+            }while(valor2<1 && valor2>2);
+
+            for (int i=0; i<existeC.size(); i++){
+                if (i==valorP){
+                    if (valor2==1){
+                        System.out.println(System.lineSeparator().repeat(1));
+
+                        System.out.println( textoRoxo + "A CONSULTA CÓDIGO: " + existeC.get(i).getCodigo() + ", ESTÁ CONFIRMADA" +textoNormal );
+
+                        marcacoes.set(i, existeC.get(i).getCodigo() + ":" + existeC.get(i).getData() + ":" + existeC.get(i).getHora() + ":" + existeC.get(i).getNIFEmpresa() + ":" +  existeC.get(i).getNIFFuncionario() + ":" +  existeC.get(i).getNIFDono() + ":" +  existeC.get(i).getCodAnimal() + ":" +  "1" + ":" + existeC.get(i).getValor() + ":" + existeC.get(i).getRealizada() + ":" + existeC.get(i).getPaga());
+
+                        FileWriter file = new FileWriter("marcacoes.dat", false);
+                        Formatter formatter = new Formatter(file);
+                        for(int w = 0; w < marcacoes.size(); w ++) {
+                            formatter.format((String) marcacoes.get(w) + "\n");
+                            formatter.flush();
+                        }
+                        formatter.close();
+
+                        System.out.println(System.lineSeparator().repeat(2));
+                        System.out.println(textoVerde + "\t\tA INFORMAÇÃO DE CONFIRMAÇÃO SÓ FICA VÁLIDA APÓS RENICIAR" + textoNormal);
+
+                    }else{
+                        System.out.println(System.lineSeparator().repeat(1));
+
+                        System.out.println( textoRoxo + "A CONSULTA CÓDIGO: " + existeC.get(i).getCodigo() + ", ESTÁ ANULADA" +textoNormal );
+
+                        marcacoes.set(i, existeC.get(i).getCodigo() + ":" + existeC.get(i).getData() + ":" +  existeC.get(i).getNIFEmpresa() + ":" +  existeC.get(i).getNIFFuncionario() + ":" +  existeC.get(i).getNIFDono() + ":" +  existeC.get(i).getCodAnimal() + ":" +  "2" + ":" + existeC.get(i).getValor() + ":" + existeC.get(i).getRealizada() + ":" + existeC.get(i).getPaga());
+
+                        FileWriter file = new FileWriter("marcacoes.dat", false);
+                        Formatter formatter = new Formatter(file);
+                        for(int w = 0; w < marcacoes.size(); w ++) {
+                            formatter.format((String) marcacoes.get(w) + "\n");
+                            formatter.flush();
+                        }
+                        formatter.close();
+
+                        System.out.println(System.lineSeparator().repeat(2));
+                        System.out.println(textoVerde + "\t\tA INFORMAÇÃO DE CONFIRMAÇÃO SÓ FICA VÁLIDA APÓS RENICIAR" + textoNormal);
+
+                    }
+                }
+            }
         }
     }
 
@@ -303,6 +500,8 @@ public class Marcacoes {
         String nifFuncionario = null;
         String codigoAnimal = null;
         String dataAux;
+        int horaAux;
+        String hora = null;
         int valor = 0, animal=0, func=0;
         Scanner sc = new Scanner(System.in);
 
@@ -310,8 +509,15 @@ public class Marcacoes {
         Animais a = new Animais();
         Ficheiro f = new Ficheiro();
 
-        System.out.print( textoRoxo + "INDIQUE A DATA EM QUE DESEJA MARCAR CONSULTA NO FORMATO dd-mm-aaaa hh:mm: " + textoNormal);
+        System.out.print( textoRoxo + "INDIQUE A DATA EM QUE DESEJA MARCAR CONSULTA NO FORMATO DD/MM/AAAA: " + textoNormal);
         dataAux = sc.nextLine();
+
+        do {
+            System.out.print( textoRoxo + "INDIQUE A HORA EM QUE DESEJA MARCAR CONSULTA NO FORMATO HH: " + textoNormal);
+            horaAux = sc.nextInt();
+        }while (horaAux>24 && horaAux<0);
+
+        hora = String.valueOf(horaAux);
 
         if (e.existeE.size()==0 || a.existeA.size()==0 || e.existeF.size()==0){
             System.out.println(textoVermelho + "\t\t NÃO EXISTEM EMPRESAS OU ANIMAIS OU FUNCIONÁRIOS REGISTADOS" + textoNormal);
@@ -381,6 +587,7 @@ public class Marcacoes {
                 formatter = new Formatter(associar);
                 formatter.format(codConsulta + ":");
                 formatter.format(dataAux + ":");
+                formatter.format(hora + ":");
                 formatter.format(nifEmpresa + ":");
                 formatter.format(nifFuncionario + ":");
                 formatter.format(nif + ":");
@@ -394,7 +601,7 @@ public class Marcacoes {
 
                 if(formatter != null){
 
-                    existeC.add(new Consulta(codConsulta, dataAux, nifEmpresa, nifFuncionario, nif, codigoAnimal, "0", "0", "0", "0"));
+                    existeC.add(new Consulta(codConsulta, dataAux, hora, nifEmpresa, nifFuncionario, nif, codigoAnimal, "0", "0", "0", "0"));
                     System.out.println(System.lineSeparator().repeat(2));
                     System.out.println(textoVerde + "\n\tA CONSULTA FOI REGISTADO COM O CÓDIGO: " + codConsulta + textoNormal);
                     System.out.println(System.lineSeparator().repeat(1));
@@ -407,6 +614,340 @@ public class Marcacoes {
                 System.out.println(textoVermelho + "FICHEIRO NÃO ENCONTRADO!" + textoNormal);
                 System.exit(0);
             }
+        }
+    }
+
+    /*
+        MOSTRA CONSULTAS AGENDADAS
+     */
+    public void mostrarConsultasAgendadas(String nifF) throws FileNotFoundException {
+        String textoVermelho = "\033[31m";
+        String textoRoxo = "\033[95m";
+        String textoVerde = "\033[32m";
+        String textoNormal = "\033[0m";
+        int valor = 0;
+        String nomeD = null;
+        String especie = null;
+        String nomeA = null;
+
+        for (int i=0; i<existeC.size(); i++){
+            if(existeC.get(i).getNIFFuncionario().equals(nifF) && existeC.get(i).getConfirmada().equals("1") && existeC.get(i).getRealizada().equals("0")){
+                Ficheiro f = new Ficheiro();
+                nomeD = f.devolveNome(existeC.get(i).getNIFDono());
+
+                Animais a = new Animais();
+                especie = a.devolveEspecie(existeC.get(i).getCodAnimal());
+                nomeA = a.devolveNome(existeC.get(i).getCodAnimal());
+
+                System.out.println(System.lineSeparator().repeat(2));
+                System.out.println(textoRoxo + "\t----- DADOS DE CONSULTA -----" + textoNormal);
+                System.out.println("\t\tCÓDIGO - " + existeC.get(i).getCodigo());
+                System.out.println("\t\tDATA - " + existeC.get(i).getData());
+                System.out.println("\t\tHORA - " + existeC.get(i).getHora());
+                System.out.println("\t\tNOME DO DONO - " +  nomeD);
+                System.out.println("\t\tESPECIE DO ANIMAL - " + especie);
+                System.out.println("\t\tNOME DO ANIMAL - " +  nomeA);
+                System.out.println("\t\tNIF DONO- " +  existeC.get(i).getNIFDono());
+                System.out.println("\t\tCÓDIGO ANIMAL - " +  existeC.get(i).getCodAnimal());
+
+                valor++;
+            }
+        }
+
+        if (valor==0){
+            System.out.println(System.lineSeparator().repeat(2));
+            System.out.println(textoVermelho + "NÃO FORAM ENCONTRADOS MARCAÇÕES PARA SI!" + textoNormal);
+        }
+    }
+
+    /*
+       MARCAR COMO REALIZADA
+    */
+    public void marcarRealizadaConsulta(String nifF) throws IOException, ParseException {
+        String textoVermelho = "\033[31m";
+        String textoRoxo = "\033[95m";
+        String textoVerde = "\033[32m";
+        String textoNormal = "\033[0m";
+        int valor = 0, valorP=0, valor2=0;
+        String nomeF = null;
+        String especie = null;
+        String nomeA = null;
+        Float valorC;
+        Ficheiro f = new Ficheiro();
+        Animais a = new Animais();
+        Empresas e = new Empresas();
+        Scanner sc = new Scanner(System.in);
+        Scanner scn = new Scanner(System.in);
+        String[] divLinha;
+        String linha;
+
+        Scanner s = new Scanner(new File("marcacoes.dat"));
+        while (s.hasNext()){
+            marcacoes.add(s.next());
+        }
+        s.close();
+
+        for (int i=0; i<existeC.size(); i++){
+            if(existeC.get(i).getNIFFuncionario().equals(nifF)){
+                if (existeC.get(i).getConfirmada().equals("1")&&existeC.get(i).getRealizada().equals("0")){
+                    nomeF = f.devolveNome(existeC.get(i).getNIFDono());
+
+                    especie = a.devolveEspecie(existeC.get(i).getCodAnimal());
+                    nomeA = a.devolveNome(existeC.get(i).getCodAnimal());
+
+                    System.out.println(System.lineSeparator().repeat(2));
+                    System.out.println(textoRoxo + "\t----- DADOS DO PEDIDO DE CONSULTA -----" + textoNormal);
+                    System.out.println(textoRoxo + "\t----- CÓDIGO RÁPIDO " + i + " -----" + textoNormal);
+                    System.out.println("\t\tCÓDIGO - " + existeC.get(i).getCodigo());
+                    System.out.println("\t\tDATA - " + existeC.get(i).getData());
+                    System.out.println("\t\tHORA - " + existeC.get(i).getHora());
+                    System.out.println("\t\tNOME DO NOME - " + nomeF);
+                    System.out.println("\t\tESPECIE DO ANIMAL - " + especie);
+                    System.out.println("\t\tNOME DO ANIMAL - " +  nomeA);
+                    System.out.println("\t\tCÓDIGO ANIMAL - " +  existeC.get(i).getCodAnimal());
+
+                    valor++;
+                }
+            }
+        }
+
+        if (valor==0){
+            System.out.println(System.lineSeparator().repeat(2));
+            System.out.println(textoVermelho + "NÃO FORAM ENCONTRADAS MARCAÇÕES PENDENTES!" + textoNormal);
+        }else{
+
+            do {
+                System.out.println(System.lineSeparator().repeat(1));
+                System.out.print( textoRoxo + "INDIQUE O CÓDIGO RÁPIDO DA CONSULTA QUE DESEJA MARCAR COMO REALIZADA: ");
+                valorP = sc.nextInt();
+                System.out.print(textoNormal);
+            }while(valorP<existeC.size() && valorP>existeC.size());
+
+            System.out.println(System.lineSeparator().repeat(2));
+            System.out.println( textoRoxo + "INDIQUE O VALOR BASE DA CONSULTA" +textoNormal );
+            valorC = sc.nextFloat();
+
+            String resp=null, desc, codConsulta = null;
+            String valorE;
+            do {
+                System.out.print(textoRoxo + "\n\tDESEJA ADICIONAR EXTRAS [S/N]: " + textoNormal);
+                resp = scn.nextLine();
+
+                if (resp.equalsIgnoreCase("S")) {
+                    System.out.println(System.lineSeparator().repeat(2));
+                    System.out.println( textoRoxo + "INDIQUE O NOME DO EXTRA A ADICIONAR NA CONSULTA: " +textoNormal );
+                    desc = scn.nextLine();
+
+                    System.out.println( textoRoxo + "INDIQUE O VALOR DO EXTRA A ADICIONAR NA CONSULTA: " +textoNormal );
+                    valorE = scn.nextLine();
+
+                    for (int i=0; i<existeC.size(); i++){
+                        if (i==valorP){
+                            codConsulta = existeC.get(i).getCodigo();
+                        }
+                    }
+                    //ADICIONA DADOS AO ARRAY DOS EXTRAS
+                    existeExtra.add(new ExtrasConsulta(codConsulta, desc, valorE));
+
+                    //GUARDAR OS REGISTOS NO FICHEIROS
+                    FileWriter registar = new FileWriter("extras.dat", true);
+                    Formatter formatter;
+                    formatter = new Formatter(registar);
+                    formatter.format(codConsulta + ":");
+                    formatter.format(desc + ":");
+                    formatter.format(valorE + "\n");
+                    formatter.flush();
+                    formatter.close();
+
+                    if(formatter != null){
+                        System.out.println("\n\tFOI ADICIONADO UM EXTRA A CONSULTA");
+                    }else{
+                        System.out.println("ERRO: EXTRA NÃO FOI ADICIONADO!");
+                    }
+                }
+            }while(resp.equalsIgnoreCase("S"));
+
+
+            for (int i=0; i<existeC.size(); i++){
+                if (i==valorP){
+                    String cc = existeC.get(i).getCodigo();
+                    float totalE=0, totalEAux=0, totalFatura=0;
+                    String totalS=null;
+
+                    for (int x=0; x<existeExtra.size(); x++){
+                        if (existeExtra.get(x).getCodConsulta().equals(cc)){
+                            totalEAux= Float.valueOf(existeExtra.get(x).getValor());
+                            totalE=totalE+totalEAux;
+                        }
+                    }
+
+                    totalFatura=totalE+valorC;
+
+                    totalS = String.valueOf(totalFatura);
+
+                    System.out.println(System.lineSeparator().repeat(1));
+
+                    System.out.println( textoRoxo + "A CONSULTA CÓDIGO: " + existeC.get(i).getCodigo() + ", ESTÁ EM PROCESSAMENTO" +textoNormal );
+
+                    marcacoes.set(i, existeC.get(i).getCodigo() + ":" + existeC.get(i).getData() + ":" + existeC.get(i).getHora() + ":" + existeC.get(i).getNIFEmpresa() + ":" +  existeC.get(i).getNIFFuncionario() + ":" +  existeC.get(i).getNIFDono() + ":" +  existeC.get(i).getCodAnimal() + ":" +  existeC.get(i).getConfirmada() + ":" + totalS + ":" + "1" + ":" + existeC.get(i).getPaga());
+
+                    FileWriter file = new FileWriter("marcacoes.dat", false);
+                    Formatter formatter1 = new Formatter(file);
+                    for(int w = 0; w < marcacoes.size(); w ++) {
+                        formatter1.format((String) marcacoes.get(w) + "\n");
+                        formatter1.flush();
+                    }
+                    formatter1.close();
+
+                    System.out.println(System.lineSeparator().repeat(2));
+                    System.out.println(textoVerde + "\t\tA INFORMAÇÃO DE REALIZAÇÃO SÓ FICA VÁLIDA APÓS RENICIAR" + textoNormal);
+                }
+            }
+        }
+    }
+
+    /*
+        MOSTRA TODAS AS MARCAÇÕES
+     */
+    public void mostrarTodasMarcacoes() throws FileNotFoundException, ParseException {
+        String textoVermelho = "\033[31m";
+        String textoRoxo = "\033[95m";
+        String textoVerde = "\033[32m";
+        String textoNormal = "\033[0m";
+        int valor = 0, vExtras=0;
+        String nomeF = null;
+        String especie = null;
+        String nomeA = null;
+        String nomeD = null;
+        Ficheiro f = new Ficheiro();
+        Animais a = new Animais();
+        Empresas e = new Empresas();
+
+        for (int i=0; i<existeC.size(); i++){
+            if (existeC.get(i).getConfirmada().equals("0")&& existeC.get(i).getRealizada().equals("0") && existeC.get(i).getPaga().equals("0")){
+                nomeF = f.devolveNome(existeC.get(i).getNIFFuncionario());
+                nomeD = f.devolveNome(existeC.get(i).getNIFDono());
+
+                especie = a.devolveEspecie(existeC.get(i).getCodAnimal());
+                nomeA = a.devolveNome(existeC.get(i).getCodAnimal());
+
+                System.out.println(System.lineSeparator().repeat(2));
+                System.out.println(textoRoxo + "\t----- DADOS DO PEDIDO DE CONSULTA -----" + textoNormal);
+                System.out.println("\t\tDATA - " + existeC.get(i).getData());
+                System.out.println("\t\tHORA - " + existeC.get(i).getHora());
+                System.out.println("\t\tNOME DA EMPRESA - " +  e.devolverNomeEmp(existeC.get(i).getNIFEmpresa()));
+                System.out.println("\t\tNIF DA EMPRESA - " +  existeC.get(i).getNIFEmpresa());
+                System.out.println("\t\tNOME DO FUNCIONÁRIO - " +  nomeF);
+                System.out.println("\t\tNOME DO DONO - " +  nomeD);
+                System.out.println("\t\tNIF DO DONO - " +  existeC.get(i).getNIFDono());
+                System.out.println("\t\tESPECIE DO ANIMAL - " + especie);
+                System.out.println("\t\tNOME DO ANIMAL - " +  nomeA);
+                System.out.println("\t\tCÓDIGO ANIMAL - " +  existeC.get(i).getCodAnimal());
+                System.out.println("\t\tESTADO - PENDENTE / A AGUARDAR CONFIRMAÇÃO");
+
+                valor++;
+            }
+            if (existeC.get(i).getConfirmada().equals("1") && existeC.get(i).getRealizada().equals("0") && existeC.get(i).getPaga().equals("0")){
+                nomeF = f.devolveNome(existeC.get(i).getNIFFuncionario());
+
+                especie = a.devolveEspecie(existeC.get(i).getCodAnimal());
+                nomeA = a.devolveNome(existeC.get(i).getCodAnimal());
+
+                System.out.println(System.lineSeparator().repeat(2));
+                System.out.println(textoRoxo + "\t----- DADOS DA CONSULTA (APROVADA) -----" + textoNormal);
+                System.out.println("\t\tDATA - " + existeC.get(i).getData());
+                System.out.println("\t\tHORA - " + existeC.get(i).getHora());
+                System.out.println("\t\tNOME DA EMPRESA - " +  e.devolverNomeEmp(existeC.get(i).getNIFEmpresa()));
+                System.out.println("\t\tNIF DA EMPRESA - " +  existeC.get(i).getNIFEmpresa());
+                System.out.println("\t\tNOME DO FUNCIONÁRIO - " +  nomeF);
+                System.out.println("\t\tNOME DO DONO - " +  nomeD);
+                System.out.println("\t\tNIF DO DONO - " +  existeC.get(i).getNIFDono());
+                System.out.println("\t\tESPECIE DO ANIMAL - " + especie);
+                System.out.println("\t\tNOME DO ANIMAL - " +  nomeA);
+                System.out.println("\t\tCÓDIGO ANIMAL - " +  existeC.get(i).getCodAnimal());
+                System.out.println("\t\tESTADO - APROVADA / AGUARDAR CONSULTA");
+
+                valor++;
+            }
+            if (existeC.get(i).getConfirmada().equals("1") && existeC.get(i).getRealizada().equals("1") && existeC.get(i).getPaga().equals("0")){
+                nomeF = f.devolveNome(existeC.get(i).getNIFFuncionario());
+
+                especie = a.devolveEspecie(existeC.get(i).getCodAnimal());
+                nomeA = a.devolveNome(existeC.get(i).getCodAnimal());
+
+                System.out.println(System.lineSeparator().repeat(2));
+                System.out.println(textoRoxo + "\t----- DADOS DA CONSULTA (EM PAGAMENTO) -----" + textoNormal);
+                System.out.println("\t\tDATA - " + existeC.get(i).getData());
+                System.out.println("\t\tHORA - " + existeC.get(i).getHora());
+                System.out.println("\t\tNOME DA EMPRESA - " +  e.devolverNomeEmp(existeC.get(i).getNIFEmpresa()));
+                System.out.println("\t\tNIF DA EMPRESA - " +  existeC.get(i).getNIFEmpresa());
+                System.out.println("\t\tNOME DO FUNCIONÁRIO - " +  nomeF);
+                System.out.println("\t\tNOME DO DONO - " +  nomeD);
+                System.out.println("\t\tNIF DO DONO - " +  existeC.get(i).getNIFDono());
+                System.out.println("\t\tESPECIE DO ANIMAL - " + especie);
+                System.out.println("\t\tNOME DO ANIMAL - " +  nomeA);
+                System.out.println("\t\tCÓDIGO ANIMAL - " +  existeC.get(i).getCodAnimal());
+                System.out.println("\t\tVALOR A PAGAR - " +  existeC.get(i).getValor() + " €");
+                System.out.println("\t\tESTADO - CONSULTA REALIZADA / A AGUARDAR PAGAMENTO");
+
+                System.out.println(System.lineSeparator().repeat(2));
+                System.out.println(textoRoxo + "\t----- DADOS DOS EXTRAS ADICIONADOS -----" + textoNormal);
+
+                for(int x=0; x<existeExtra.size(); x++){
+                    if (existeExtra.get(x).getCodConsulta().equals(existeC.get(i).getCodigo())){
+                        System.out.println("\tNOME - " + existeExtra.get(x).getDesc());
+                        System.out.println("\tVALOR - " + existeExtra.get(x).getValor() + "€");
+                        vExtras++;
+                    }
+                }
+
+                if (vExtras==0){
+                    System.out.println(textoRoxo + "\t----- NÃO EXISTEM EXTRAS NESTA CONSULTA -----" + textoNormal);
+                }
+            }
+            if (existeC.get(i).getConfirmada().equals("1") && existeC.get(i).getRealizada().equals("1") && existeC.get(i).getPaga().equals("1")){
+                nomeF = f.devolveNome(existeC.get(i).getNIFFuncionario());
+
+                especie = a.devolveEspecie(existeC.get(i).getCodAnimal());
+                nomeA = a.devolveNome(existeC.get(i).getCodAnimal());
+
+                System.out.println(System.lineSeparator().repeat(2));
+                System.out.println(textoRoxo + "\t----- DADOS DA CONSULTA (REALIZADA) -----" + textoNormal);
+                System.out.println("\t\tDATA - " + existeC.get(i).getData());
+                System.out.println("\t\tHORA - " + existeC.get(i).getHora());
+                System.out.println("\t\tNOME DA EMPRESA - " +  e.devolverNomeEmp(existeC.get(i).getNIFEmpresa()));
+                System.out.println("\t\tNIF DA EMPRESA - " +  existeC.get(i).getNIFEmpresa());
+                System.out.println("\t\tNOME DO FUNCIONÁRIO - " +  nomeF);
+                System.out.println("\t\tNOME DO DONO - " +  nomeD);
+                System.out.println("\t\tNIF DO DONO - " +  existeC.get(i).getNIFDono());
+                System.out.println("\t\tESPECIE DO ANIMAL - " + especie);
+                System.out.println("\t\tNOME DO ANIMAL - " +  nomeA);
+                System.out.println("\t\tCÓDIGO ANIMAL - " +  existeC.get(i).getCodAnimal());
+                System.out.println("\t\tVALOR A PAGO - " +  existeC.get(i).getValor() + " €");
+                System.out.println("\t\tESTADO - CONSULTA REALIZADA / PAGA");
+
+                System.out.println(System.lineSeparator().repeat(2));
+                System.out.println(textoRoxo + "\t----- DADOS DOS EXTRAS ADICIONADOS -----");
+                System.out.println("\t       NOME             VALOR     " + textoNormal);
+
+                for(int x=0; x<existeExtra.size(); x++){
+                    if (existeExtra.get(x).getCodConsulta().equals(existeC.get(i).getCodigo())){
+                        System.out.println("\t  " + existeExtra.get(x).getDesc() + "            " + existeExtra.get(x).getValor() + "€   ");
+                        vExtras++;
+                    }
+                }
+
+                if (vExtras==0){
+                    System.out.println(textoRoxo + "\t|      NÃO EXISTEM EXTRAS NESTA CONSULTA      |" + textoNormal);
+                }
+
+                valor++;
+            }
+        }
+
+        if (valor==0){
+            System.out.println(System.lineSeparator().repeat(2));
+            System.out.println(textoVermelho + "NÃO FORAM ENCONTRADOS MARCAÇÕES REGISTADOS!" + textoNormal);
         }
     }
 

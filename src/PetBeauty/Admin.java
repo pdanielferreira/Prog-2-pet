@@ -1,18 +1,18 @@
 package PetBeauty;
 
 import java.io.IOException;
+import java.text.ParseException;
 import java.util.Scanner;
 
-public class DonoEmpresa extends Utilizador{
-
-    public DonoEmpresa(String username, String password, String nome, String apelido, String NIF, String nTel, String tipo) {
-        super(username, password, nome, apelido, NIF, nTel, "2");
+public class Admin extends Utilizador {
+    public Admin(String username, String password, String nome, String apelido, String NIF, String nTel, String tipo) {
+        super(username, password, nome, apelido, NIF, nTel, "3");
     }
 
     /*
-        MENU DO DONO DE EMPRESA
+        MENU DO ADMINISTRADOR PETBEATY
      */
-    public void menuDonoEmpresa() throws IOException {
+    public void menuAdmin() throws IOException, ParseException {
         String textoVermelho = "\033[31m";
         String textoVerde = "\033[32m";
         String textoAmarelo = "\033[93m";
@@ -38,20 +38,22 @@ public class DonoEmpresa extends Utilizador{
         Scanner sc = new Scanner(System.in);
         do{
             System.out.println(System.lineSeparator().repeat(3));
-            System.out.println(textoAmarelo + "\t-------------- MENU DONO DE EMPRESA --------------");
+            System.out.println(textoAmarelo + "\t-------------- MENU ADMINISTRADOR --------------");
             System.out.println("\t\t1 - VER PERFIL");
             System.out.println("\t\t2 - EDITAR PERFIL");
-            System.out.println("\t\t3 - VER EMPRESAS");
-            System.out.println("\t\t4 - CRIAR EMPRESAS");
+            System.out.println("\t\t3 - LISTAR EMPRESAS");
+            System.out.println("\t\t4 - BLOQUEAR EMPRESAS");
             System.out.println("\t\t5 - VER FUNCIONÁRIOS");
-            System.out.println("\t\t6 - CRIAR FUNCIONÁRIOS");
-            System.out.println("\t\t7 - VER CONSULTAS AGENDADAS \n");
+            System.out.println("\t\t6 - BLOQUEAR FUNCIONÁRIOS");
+            System.out.println("\t\t7 - VER CONSULTAS AGENDADAS");
+            System.out.println("\t\t8 - VER ADMIN");
+            System.out.println("\t\t9 - REGISTAR ADMIN \n");
             System.out.println("\t\t0 - SAIR" + textoNormal);
 
             do{
                 System.out.print("Escolha uma opção: ");
                 op = sc.nextInt();
-            }while(op < 0 || op > 7);
+            }while(op < 0 || op > 8);
 
 
             switch(op){
@@ -76,7 +78,7 @@ public class DonoEmpresa extends Utilizador{
                     VER TODOS AS EMPRESAS
                  */
                 case 3:{
-                    e.listarEmpresas(getNIF());
+                    e.listarTodasEmpresas();
                     break;
                 }
 
@@ -134,23 +136,24 @@ public class DonoEmpresa extends Utilizador{
                     MOTRA TODAS AS CONSULTAS AGENDADAS
                  */
                 case 7:{
-                    //LISTA TODAS AS EMPRESAS EXISTENTES
-                    e.listarEmpresas(getNIF());
-
-                    //ENTRA NO MODO ADICIONA FUNCIONARIO
-                    String nifFuncionario;
-                    do {
-                        System.out.println(System.lineSeparator().repeat(1));
-                        System.out.print( textoRoxo + "INDIQUE O CÓDIGO DA EMPRESA A QUAL DESEJA ASSOCIAR UM FUNCIONÁRIO: ");
-                        int valor = sc.nextInt();
-                        System.out.print(textoNormal);
-
-                        nifFuncionario = f.registarFuncionario();
-
-                    }while (nifFuncionario.equals("1"));        //RETORNA, RETORNA ERRO
-
+                    m.mostrarTodasMarcacoes();
                     break;
                 }
+                /*
+                    MOTRA TODOS OIS ADMINS REGISTADOS
+                 */
+                case 8:{
+                    f.listarA();
+                    break;
+                }
+                /*
+                    REGISTA NOVOS ADMINS
+                 */
+                case 9:{
+                    f.registarAdmin();
+                    break;
+                }
+
                 default:{
                     System.out.println(textoVerde + "A SAIR ..." + textoNormal);
                     System.exit(0);
@@ -174,4 +177,5 @@ public class DonoEmpresa extends Utilizador{
         System.out.println("\t\tNIF - " + getNIF());
         System.out.println("\t\tNÚMERO DE TELEMÓVEL - " + getnTel());
     }
+
 }

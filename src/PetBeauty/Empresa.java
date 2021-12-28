@@ -5,16 +5,36 @@ public class Empresa {
     private String nome;
     private String morada;
     private String localidade;
+    private String especialidade;
     private String nTel;
     private String nifDono;
+    private String ativo;
 
-    public Empresa(String nifEmpresa, String nome, String morada, String localidade, String nTel, String nifDono){
+    public Empresa(String nifEmpresa, String nome, String morada, String localidade, String especialidade, String nTel, String nifDono, String ativo){
         this.nifEmpresa = nifEmpresa;
         this.nome = nome;
         this.morada=morada;
         this.localidade=localidade;
+        this.especialidade=especialidade;
         this.nTel=nTel;
         this.nifDono=nifDono;
+        this.ativo=ativo;
+    }
+
+    public String getAtivo() {
+        return ativo;
+    }
+
+    public void setAtivo(String ativo) {
+        this.ativo = ativo;
+    }
+
+    public String getEspecialidade() {
+        return especialidade;
+    }
+
+    public void setEspecialidade(String especialidade) {
+        this.especialidade = especialidade;
     }
 
     public String getNifEmpresa() {
