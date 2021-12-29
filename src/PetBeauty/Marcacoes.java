@@ -220,18 +220,21 @@ public class Marcacoes {
 
                     System.out.println(System.lineSeparator().repeat(2));
                     System.out.println(textoRoxo + "\t----- DADOS DOS EXTRAS ADICIONADOS -----" + textoNormal);
+                    System.out.println("\t       NOME             VALOR     " + textoNormal);
 
                     for(int x=0; x<existeExtra.size(); x++){
                         if (existeExtra.get(x).getCodConsulta().equals(existeC.get(i).getCodigo())){
-                            System.out.println("\tNOME - " + existeExtra.get(x).getDesc());
-                            System.out.println("\tVALOR - " + existeExtra.get(x).getValor() + "€");
+                            System.out.println("\t  " + existeExtra.get(x).getDesc() + "            " + existeExtra.get(x).getValor() + "€   ");
                             vExtras++;
                         }
                     }
 
                     if (vExtras==0){
-                        System.out.println(textoRoxo + "\t----- NÃO EXISTEM EXTRAS NESTA CONSULTA -----" + textoNormal);
+                        System.out.println(textoRoxo + "\t|      NÃO EXISTEM EXTRAS NESTA CONSULTA      |" + textoNormal);
                     }
+
+                    valor++;
+
                 }
                 if (existeC.get(i).getConfirmada().equals("1") && existeC.get(i).getRealizada().equals("1") && existeC.get(i).getPaga().equals("1")){
                     nomeF = f.devolveNome(existeC.get(i).getNIFFuncionario());
@@ -275,7 +278,7 @@ public class Marcacoes {
 
         if (valor==0){
             System.out.println(System.lineSeparator().repeat(2));
-            System.out.println(textoVermelho + "NÃO FORAM ENCONTRADOS PEDIDOS MARCAÇÕES ASSOCIADAS A SI!" + textoNormal);
+            System.out.println(textoVermelho + "NÃO FORAM ENCONTRADOS PEDIDOS MARCAÇÕES ASSOCIADAS A SI!" + valor + textoNormal);
         }
     }
 
@@ -410,7 +413,7 @@ public class Marcacoes {
                     System.out.println("\t\tCÓDIGO - " + existeC.get(i).getCodigo());
                     System.out.println("\t\tDATA - " + existeC.get(i).getData());
                     System.out.println("\t\tHORA - " + existeC.get(i).getHora());
-                    System.out.println("\t\tNOME DO NOME - " + nomeF);
+                    System.out.println("\t\tNOME DO D1OME - " + nomeF);
                     System.out.println("\t\tESPECIE DO ANIMAL - " + especie);
                     System.out.println("\t\tNOME DO ANIMAL - " +  nomeA);
                     System.out.println("\t\tCÓDIGO ANIMAL - " +  existeC.get(i).getCodAnimal());
@@ -502,7 +505,7 @@ public class Marcacoes {
         String dataAux;
         int horaAux;
         String hora = null;
-        int valor = 0, animal=0, func=0;
+        int valor = 0, animal=0, func=0, existeEmpresas;
         Scanner sc = new Scanner(System.in);
 
         Empresas e = new Empresas();
@@ -524,95 +527,101 @@ public class Marcacoes {
 
         }else{
             //OBTEM O I PARA A EMPRESA
-            e.listarTodasEmpresas();
+            existeEmpresas = e.listarTodasEmpresasNBloqueadas();
 
-            do {
-                System.out.println(System.lineSeparator().repeat(1));
-                System.out.print( textoRoxo + "INDIQUE O CÓDIGO DA EMPRESA DA EMPRESA QUE DESEJA MARCAR CONSULTA: ");
-                valor = sc.nextInt();
-                System.out.print(textoNormal);
-            }while (valor<e.existeE.size() && valor>e.existeE.size());
-
-            //OBTEM O I PARA O ANIMAL
-            a.listarAnimais(nif);
-
-            do {
-                System.out.println(System.lineSeparator().repeat(1));
-                System.out.print( textoRoxo + "INDIQUE O CÓDIGO DO ANIMAL QUE DESEJA MARCAR CONSULTA: ");
-                animal = sc.nextInt();
-                System.out.print(textoNormal);
-            }while (animal<a.existeA.size() && animal>a.existeA.size());
-
-            //OBTEM O I PARA O FUNCIONÁRIO
-            e.lerFuncEmp(valor);
-
-            do {
-                System.out.println(System.lineSeparator().repeat(1));
-                System.out.print( textoRoxo + "INDIQUE O CÓDIGO DO FUNCIONÁRIO QUE DESEJA MARCAR CONSULTA: ");
-                func = sc.nextInt();
-                System.out.print(textoNormal);
-            }while (func<f.existeU.size() && func>f.existeU.size());
-
-            //OBTEM O NIF DA EMPRESA
-            for (int i=0; i<e.existeE.size(); i++){
-                if (i==valor){
-                    nifEmpresa = e.existeE.get(i).getNifEmpresa();
-                    break;
-                }
-            }
-
-            //OBTEM O NIF DO FUNCIONARIO
-            for (int j=0; j<f.existeU.size(); j++){
-                if (j==func){
-                    nifFuncionario=f.existeU.get(j).getNIF();
-                    break;
-                }
-            }
-
-            //OBTEM O CÓDIGO DO ANIMAL
-            for(int i=0; i<a.existeA.size(); i++) {
-                if(i==animal){
-                    codigoAnimal=a.existeA.get(i).getCodAnimal();
-                }
-            }
-
-            //GERA CODIGO DE CONSULTA
-            String codConsulta = UUID.randomUUID().toString();
-
-            //REGISTA CONSULTA
-            FileWriter associar = new FileWriter("marcacoes.dat", true);
-            Formatter formatter;
-
-            try{
-                formatter = new Formatter(associar);
-                formatter.format(codConsulta + ":");
-                formatter.format(dataAux + ":");
-                formatter.format(hora + ":");
-                formatter.format(nifEmpresa + ":");
-                formatter.format(nifFuncionario + ":");
-                formatter.format(nif + ":");
-                formatter.format(codigoAnimal + ":");
-                formatter.format("0" + ":");
-                formatter.format("0" + ":");
-                formatter.format("0" + ":");
-                formatter.format("0" + "\n");
-                formatter.flush();
-                formatter.close();
-
-                if(formatter != null){
-
-                    existeC.add(new Consulta(codConsulta, dataAux, hora, nifEmpresa, nifFuncionario, nif, codigoAnimal, "0", "0", "0", "0"));
-                    System.out.println(System.lineSeparator().repeat(2));
-                    System.out.println(textoVerde + "\n\tA CONSULTA FOI REGISTADO COM O CÓDIGO: " + codConsulta + textoNormal);
+            if (existeEmpresas==0) {        //existem empresas
+                do {
                     System.out.println(System.lineSeparator().repeat(1));
+                    System.out.print(textoRoxo + "INDIQUE O CÓDIGO DA EMPRESA DA EMPRESA QUE DESEJA MARCAR CONSULTA: ");
+                    valor = sc.nextInt();
+                    System.out.print(textoNormal);
+                } while (valor < e.existeE.size() && valor > e.existeE.size());
 
-                }else{
-                    System.out.println(textoVermelho + "ERRO: CONSULTA NÃO REGISTADA" + textoNormal);
+                //OBTEM O I PARA O ANIMAL
+                a.listarAnimais(nif);
+
+                do {
+                    System.out.println(System.lineSeparator().repeat(1));
+                    System.out.print(textoRoxo + "INDIQUE O CÓDIGO DO ANIMAL QUE DESEJA MARCAR CONSULTA: ");
+                    animal = sc.nextInt();
+                    System.out.print(textoNormal);
+                } while (animal < a.existeA.size() && animal > a.existeA.size());
+
+                //OBTEM O I PARA O FUNCIONÁRIO
+                e.lerFuncEmp(valor);
+
+                do {
+                    System.out.println(System.lineSeparator().repeat(1));
+                    System.out.print(textoRoxo + "INDIQUE O CÓDIGO DO FUNCIONÁRIO QUE DESEJA MARCAR CONSULTA: ");
+                    func = sc.nextInt();
+                    System.out.print(textoNormal);
+                } while (func < f.existeU.size() && func > f.existeU.size());
+
+                //OBTEM O NIF DA EMPRESA
+                for (int i = 0; i < e.existeE.size(); i++) {
+                    if (i == valor) {
+                        nifEmpresa = e.existeE.get(i).getNifEmpresa();
+                        break;
+                    }
                 }
 
-            }catch (Exception y) {
-                System.out.println(textoVermelho + "FICHEIRO NÃO ENCONTRADO!" + textoNormal);
-                System.exit(0);
+                //OBTEM O NIF DO FUNCIONARIO
+                for (int j = 0; j < f.existeU.size(); j++) {
+                    if (j == func) {
+                        nifFuncionario = f.existeU.get(j).getNIF();
+                        break;
+                    }
+                }
+
+                //OBTEM O CÓDIGO DO ANIMAL
+                for (int i = 0; i < a.existeA.size(); i++) {
+                    if (i == animal) {
+                        codigoAnimal = a.existeA.get(i).getCodAnimal();
+                    }
+                }
+
+                //GERA CODIGO DE CONSULTA
+                String codConsulta = UUID.randomUUID().toString();
+
+                //REGISTA CONSULTA
+                FileWriter associar = new FileWriter("marcacoes.dat", true);
+                Formatter formatter;
+
+                try {
+                    formatter = new Formatter(associar);
+                    formatter.format(codConsulta + ":");
+                    formatter.format(dataAux + ":");
+                    formatter.format(hora + ":");
+                    formatter.format(nifEmpresa + ":");
+                    formatter.format(nifFuncionario + ":");
+                    formatter.format(nif + ":");
+                    formatter.format(codigoAnimal + ":");
+                    formatter.format("0" + ":");
+                    formatter.format("0" + ":");
+                    formatter.format("0" + ":");
+                    formatter.format("0" + "\n");
+                    formatter.flush();
+                    formatter.close();
+
+                    if (formatter != null) {
+
+                        existeC.add(new Consulta(codConsulta, dataAux, hora, nifEmpresa, nifFuncionario, nif, codigoAnimal, "0", "0", "0", "0"));
+                        System.out.println(System.lineSeparator().repeat(2));
+                        System.out.println(textoVerde + "\n\tA CONSULTA FOI REGISTADO COM O CÓDIGO: " + codConsulta + textoNormal);
+                        System.out.println(System.lineSeparator().repeat(1));
+
+                    } else {
+                        System.out.println(textoVermelho + "ERRO: CONSULTA NÃO REGISTADA" + textoNormal);
+                    }
+
+                } catch (Exception y) {
+                    System.out.println(textoVermelho + "FICHEIRO NÃO ENCONTRADO!" + textoNormal);
+                    System.exit(0);
+                }
+            }else{
+                System.out.println(System.lineSeparator().repeat(2));
+                System.out.println(textoVermelho + "\n\tNÃO EXISTEM EMPRESAS REGISTADAS " + textoNormal);
+
             }
         }
     }
@@ -948,6 +957,64 @@ public class Marcacoes {
         if (valor==0){
             System.out.println(System.lineSeparator().repeat(2));
             System.out.println(textoVermelho + "NÃO FORAM ENCONTRADOS MARCAÇÕES REGISTADOS!" + textoNormal);
+        }
+    }
+
+    /*
+        MOSTRA CONSULTAS AGENDADAS
+     */
+    public void mostrarConsultasAgendadasE(String nifD) throws FileNotFoundException {
+        String textoVermelho = "\033[31m";
+        String textoRoxo = "\033[95m";
+        String textoVerde = "\033[32m";
+        String textoNormal = "\033[0m";
+        int valor = 0, codE;
+        String nifE=null, nomeD, especie, nomeA, nomeF;
+
+        Scanner sc = new Scanner(System.in);
+
+        Empresas e = new Empresas();
+        e.listarEmpresas(nifD);
+        do {
+            System.out.print("INSIRA O CÓDIGO DA EMPRESA QUE DESEJA CONSULTAR: ");
+            codE = sc.nextInt();
+        }while(Empresas.existeE.size()>codE && Empresas.existeE.size()<codE);
+
+        for (int x=0; x<Empresas.existeE.size(); x++){
+            if (x==codE){
+                nifE=Empresas.existeE.get(x).getNifEmpresa();
+            }
+        }
+
+        for (int i=0; i<existeC.size(); i++){
+            if(existeC.get(i).getNIFEmpresa().equals(nifE) && existeC.get(i).getConfirmada().equals("1") && existeC.get(i).getRealizada().equals("0")){
+                Ficheiro f = new Ficheiro();
+                nomeD = f.devolveNome(existeC.get(i).getNIFDono());
+                nomeF = f.devolveNome(existeC.get(i).getNIFFuncionario());
+
+                Animais a = new Animais();
+                especie = a.devolveEspecie(existeC.get(i).getCodAnimal());
+                nomeA = a.devolveNome(existeC.get(i).getCodAnimal());
+
+                System.out.println(System.lineSeparator().repeat(2));
+                System.out.println(textoRoxo + "\t----- DADOS DE CONSULTA -----" + textoNormal);
+                System.out.println("\t\tCÓDIGO - " + existeC.get(i).getCodigo());
+                System.out.println("\t\tFUNCIONÁRIO - " + nomeF);
+                System.out.println("\t\tDATA - " + existeC.get(i).getData());
+                System.out.println("\t\tHORA - " + existeC.get(i).getHora());
+                System.out.println("\t\tNOME DO DONO - " +  nomeD);
+                System.out.println("\t\tESPECIE DO ANIMAL - " + especie);
+                System.out.println("\t\tNOME DO ANIMAL - " +  nomeA);
+                System.out.println("\t\tNIF DONO- " +  existeC.get(i).getNIFDono());
+                System.out.println("\t\tCÓDIGO ANIMAL - " +  existeC.get(i).getCodAnimal());
+
+                valor++;
+            }
+        }
+
+        if (valor==0){
+            System.out.println(System.lineSeparator().repeat(2));
+            System.out.println(textoVermelho + "NÃO FORAM ENCONTRADOS MARCAÇÕES!" + textoNormal);
         }
     }
 

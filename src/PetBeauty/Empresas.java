@@ -10,6 +10,8 @@ import java.util.Scanner;
 
 public class Empresas {
     public static ArrayList<Empresa> existeE = new ArrayList<>();
+    ArrayList empresas = new ArrayList();
+    ArrayList funcionarios = new ArrayList();
     public static ArrayList<AssociacaoFuncEmpresa> existeF = new ArrayList<>();
 
     /*
@@ -90,6 +92,20 @@ public class Empresas {
     }
 
     /*
+        ANÁLISA SE O FUNCIONÁRIO ESTÁ AUTORIZADO A ENTRAR NO SISTEMA
+     */
+    public int analisaEntrada(String nif){
+        for (int i=0; i<existeF.size(); i++){
+            if (existeF.get(i).getNifFuncionario().equals(nif) && existeF.get(i).getAtivo().equals("0")){
+                //RETORNA QUE ESTA ATIVO
+                return 0;
+            }
+        }
+        //RETORNA QUE ESTA BLOQUEADO
+        return 1;
+    }
+
+    /*
         REGISTAR UM NOVA EMPRESA
      */
     public void RegistarNovaEmpresa(String nifD) throws IOException{
@@ -167,7 +183,7 @@ public class Empresas {
                 System.out.println("\t\tNIF - " + nif);
                 System.out.println("\t\tMORADA - " + morada);
                 System.out.println("\t\tLOCALIDADE - " + localidade);
-                System.out.println("\t\tESPECILIDADE - " + localidade);
+                System.out.println("\t\tESPECILIDADE - " + especialidade);
                 System.out.println("\t\tNÚMERO DE TELEMÓVEL - " + nTel);
                 System.out.println("\t\tNIF DO PROPRIETÁRIO - " + nifD);
 
@@ -211,7 +227,7 @@ public class Empresas {
                 System.out.println("\t\tNOME - " + existeE.get(i).getNome());
                 System.out.println("\t\tMORADA - " + existeE.get(i).getMorada());
                 System.out.println("\t\tLOCALIDADE - " + existeE.get(i).getLocalidade());
-                System.out.println("\t\tLOCALIDADE - " + existeE.get(i).getEspecialidade());
+                System.out.println("\t\tESPECIALIDADE - " + existeE.get(i).getEspecialidade());
                 System.out.println("\t\tNÚMERO DE TELEMÓVEL - " + existeE.get(i).getnTel());
                 System.out.println("\t\tNIF DO DONO - " + existeE.get(i).getNifDono());
                 System.out.println("\t\tESTADO - " + txt);
@@ -345,8 +361,37 @@ public class Empresas {
 
                 Ficheiro f = new Ficheiro();
                 f.lerNIF(nifF);
-                System.out.println("\t\tATIVO - " +  txt);
+                System.out.println("\t\tESTADO - " +  txt);
             }
+        }
+    }
+
+    /*
+        LER TODOS OS FUNCIONÁRIOS
+     */
+    public void lerTodosFuncEmp() throws IOException{
+        String textoVermelho = "\033[31m";
+        String textoRoxo = "\033[95m";
+        String textoVerde = "\033[32m";
+        String textoNormal = "\033[0m";
+        String nifEmpresa = null;
+        String txt = null;
+        String nifF = null;
+        String nifE=null;
+
+        for (int i=0; i<existeF.size(); i++){
+            nifF=existeF.get(i).getNifFuncionario();
+            String despedido = existeF.get(i).getAtivo();
+
+
+            if (despedido.equals("0")){
+                txt = " A TRABALHAR ";
+            }else{
+                txt = " DESPEDIDO ";
+            }
+
+            Ficheiro f = new Ficheiro();
+            f.lerNIF(nifF);
         }
     }
 
@@ -383,9 +428,270 @@ public class Empresas {
             count++;
         }
         if(count==0){
-            System.out.println(textoVermelho + "\t\t NÃO EXISTEM EMPRESAS REGISTADOS" + count + textoNormal);
+            System.out.println(textoVermelho + "\t\t NÃO EXISTEM EMPRESAS REGISTADOS" + textoNormal);
         }
 
+    }
+
+    /*
+        LISTA TODAS AS EMPRESAS NÃO BLOQUEADAS
+     */
+    public int listarTodasEmpresasNBloqueadas(){
+        String textoVermelho = "\033[31m";
+        String textoVerde = "\033[32m";
+        String textoAmarelo = "\033[93m";
+        String textoRoxo = "\033[95m";
+        String textoNormal = "\033[0m";
+        int count=0;
+
+        System.out.println(textoRoxo + "\t\t TODAS AS EMPRESAS:" + textoNormal);
+
+        for(int i=0; i<existeE.size(); i++) {
+            if (existeE.get(i).getAtivo().equals("0")) {
+                System.out.println(System.lineSeparator().repeat(2));
+                System.out.println(textoRoxo + "\t----- EMPRESA: " + existeE.get(i).getNifEmpresa() + " -----" + textoNormal);
+                System.out.println(textoRoxo + "\t----- CÓDIGO DE EMPRESA: " + i + " -----" + textoNormal);
+                System.out.println("\t\tNOME - " + existeE.get(i).getNome());
+                System.out.println("\t\tMORADA - " + existeE.get(i).getMorada());
+                System.out.println("\t\tLOCALIDADE - " + existeE.get(i).getLocalidade());
+                System.out.println("\t\tESPECIALIDADE - " + existeE.get(i).getEspecialidade());
+                System.out.println("\t\tNÚMERO DE TELEMÓVEL - " + existeE.get(i).getnTel());
+                count++;
+            }
+        }
+        if(count==0){
+            return 1;
+        }else
+            return 0;
+
+    }
+
+
+    /*
+        permite bloquear empresa
+     */
+    public void bloquearEmpresas(int op) throws IOException {
+        Scanner sc = new Scanner(System.in);
+        int codER, count=0;
+        String textoVermelho = "\033[31m";
+        String textoVerde = "\033[32m";
+        String textoAmarelo = "\033[93m";
+        String textoRoxo = "\033[95m";
+        String textoNormal = "\033[0m";
+        String txt = null;
+        String escolha;
+
+        Scanner s = new Scanner(new File("empresas.dat"));
+        while (s.hasNext()){
+            empresas.add(s.next());
+        }
+        s.close();
+
+        System.out.print(textoRoxo + "\n\tDESEJA ALTERAR O ESTADO DE UMA EMPRESA [S/N]: " + textoNormal);
+        String resp = sc.nextLine();
+
+        if (resp.toUpperCase().equals("S")) {
+            listarTodasEmpresas();
+
+            do {
+                System.out.print("INSIRA O CÓDIGO DA EMPRESA QUE DESEJA ALTERAR: ");
+                codER = sc.nextInt();
+            }while(empresas.size()>codER && empresas.size()<codER);
+
+            for(int i=0; i<empresas.size(); i++) {
+                if(i==codER){
+                    if(existeE.get(i).getAtivo().equals(op)){
+                        if (op==0){
+                            System.out.println(textoVermelho + "\t\tA EMPRESA QUE DESEJA BLOQUEAR, JÁ SE ENCONTRA NESSE ESTADO. \n\t\tNENHUMA ALTERAÇÃO EFETUADA" + textoNormal);
+                            break;
+                        }else{
+                            System.out.println(textoVermelho + "\t\tA EMPRESA QUE DESEJA DESBLOQUEAR, JÁ SE ENCONTRA NESSE ESTADO. \n\t\tNENHUMA ALTERAÇÃO EFETUADA" + textoNormal);
+                            break;
+                        }
+                    }else{
+
+                        if (op==0){
+                            escolha="1";
+                        }else{
+                            escolha="0";
+                        }
+                        empresas.set(i, existeE.get(i).getNifEmpresa() + ":" + existeE.get(i).getNome() + ":" + existeE.get(i).getMorada() + ":" + existeE.get(i).getLocalidade() + ":" + existeE.get(i).getEspecialidade() + ":" + existeE.get(i).getnTel() + ":" + existeE.get(i).getNifDono() + ":" + escolha);
+
+                        FileWriter file = new FileWriter("empresas.dat", false);
+                        Formatter formatter = new Formatter(file);
+                        for(int w = 0; w < empresas.size(); w ++) {
+                            formatter.format((String) empresas.get(w) + "\n");
+                            formatter.flush();
+                        }
+                        formatter.close();
+
+                        System.out.println(System.lineSeparator().repeat(2));
+                        System.out.println(textoVerde + "\t\tA INFORMAÇÃO SÓ FICA VÁLIDA APÓS RENICIAR" + textoNormal);
+
+                    }
+                    count++;
+                }
+            }
+            if(count==0){
+                System.out.println(textoVermelho + "\t\t NÃO EXISTEM EMPRESAS REGISTADOS COM O CÓDIGO QUE INDICOU!" + textoNormal);
+            }
+        }
+    }
+
+    /*
+        PERMITE BLOQUEAR/DESBLOQUEAR FUNCIONARIOS
+     */
+    public void bloquearFunc(int op) throws IOException {
+        Scanner sc = new Scanner(System.in);
+        int codER, count=0;
+        String textoVermelho = "\033[31m";
+        String textoVerde = "\033[32m";
+        String textoAmarelo = "\033[93m";
+        String textoRoxo = "\033[95m";
+        String textoNormal = "\033[0m";
+        String txt = null;
+        String escolha;
+        String nifF;
+
+        Scanner s = new Scanner(new File("funcionarios.dat"));
+        while (s.hasNext()){
+            funcionarios.add(s.next());
+        }
+        s.close();
+
+        System.out.print(textoRoxo + "\n\tDESEJA ALTERAR O ESTADO DE UM FUNIONÁRIO [S/N]: " + textoNormal);
+        String resp = sc.nextLine();
+
+        if (resp.toUpperCase().equals("S")) {
+            lerTodosFuncEmp();
+
+            do {
+                System.out.print("INSIRA O CÓDIGO DO FUNCIONÁRIO QUE DESEJA ALTERAR: ");
+                codER = sc.nextInt();
+            }while(funcionarios.size()>codER && funcionarios.size()<codER);
+
+            Ficheiro f = new Ficheiro();
+            nifF = f.devolveNIF(codER);
+
+            for(int i=0; i<existeF.size(); i++) {
+                if(existeF.get(i).getNifFuncionario().equals(nifF)){
+                    if(existeF.get(i).getAtivo().equals(op)){
+                        if (op==0){
+                            System.out.println(textoVermelho + "\t\tO FUNCIONÁRIO QUE DESEJA BLOQUEAR, JÁ SE ENCONTRA NESSE ESTADO. \n\t\tNENHUMA ALTERAÇÃO EFETUADA" + textoNormal);
+                            break;
+                        }else{
+                            System.out.println(textoVermelho + "\t\tO FUNCIONÁRIO QUE DESEJA DESBLOQUEAR, JÁ SE ENCONTRA NESSE ESTADO. \n\t\tNENHUMA ALTERAÇÃO EFETUADA" + textoNormal);
+                            break;
+                        }
+                    }else{
+
+                        if (op==0){
+                            escolha="1";
+                        }else{
+                            escolha="0";
+                        }
+                        funcionarios.set(i, nifF + ":" + existeF.get(i).getNifEmpresa() + ":" + escolha);
+
+                        FileWriter file = new FileWriter("funcionarios.dat", false);
+                        Formatter formatter = new Formatter(file);
+                        for(int w = 0; w < funcionarios.size(); w ++) {
+                            formatter.format((String) funcionarios.get(w) + "\n");
+                            formatter.flush();
+                        }
+                        formatter.close();
+
+                        System.out.println(System.lineSeparator().repeat(2));
+                        System.out.println(textoVerde + "\t\tA INFORMAÇÃO SÓ FICA VÁLIDA APÓS RENICIAR" + textoNormal);
+
+                    }
+                    count++;
+                }
+            }
+            if(count==0){
+                System.out.println(textoVermelho + "\t\t NÃO EXISTEM FUNCIONÁRIOS REGISTADOS COM O CÓDIGO QUE INDICOU!" + textoNormal);
+            }
+        }
+    }
+
+    /*
+        PERMITE DONOS DE EMPRESA BLOQUEAR/DESBLOQUEAR FUNCIONARIOS
+     */
+    public void bloquearFuncDonoE(int op, String nifD) throws IOException {
+        Scanner sc = new Scanner(System.in);
+        int codER, count=0, codE;
+        String textoVermelho = "\033[31m";
+        String textoVerde = "\033[32m";
+        String textoAmarelo = "\033[93m";
+        String textoRoxo = "\033[95m";
+        String textoNormal = "\033[0m";
+        String txt = null;
+        String escolha;
+        String nifF;
+
+        Scanner s = new Scanner(new File("funcionarios.dat"));
+        while (s.hasNext()){
+            funcionarios.add(s.next());
+        }
+        s.close();
+
+        System.out.print(textoRoxo + "\n\tDESEJA ALTERAR O ESTADO DE UM FUNIONÁRIO [S/N]: " + textoNormal);
+        String resp = sc.nextLine();
+
+        if (resp.toUpperCase().equals("S")) {
+            listarEmpresas(nifD);
+            do {
+                System.out.print("INSIRA O CÓDIGO DA EMPRESA EM QUE O FUNCIONÁRIO ESTA ASSOCIADO: ");
+                codE = sc.nextInt();
+            }while(existeE.size()>codE && existeE.size()<codE);
+
+            lerFuncEmp(codE);
+
+            do {
+                System.out.print("INSIRA O CÓDIGO DO FUNCIONÁRIO QUE DESEJA ALTERAR: ");
+                codER = sc.nextInt();
+            }while(funcionarios.size()>codER && funcionarios.size()<codER);
+
+            Ficheiro f = new Ficheiro();
+            nifF = f.devolveNIF(codER);
+
+            for(int i=0; i<existeF.size(); i++) {
+                if(existeF.get(i).getNifFuncionario().equals(nifF)){
+                    if(existeF.get(i).getAtivo().equals(op)){
+                        if (op==0){
+                            System.out.println(textoVermelho + "\t\tO FUNCIONÁRIO QUE DESEJA BLOQUEAR, JÁ SE ENCONTRA NESSE ESTADO. \n\t\tNENHUMA ALTERAÇÃO EFETUADA" + textoNormal);
+                            break;
+                        }else{
+                            System.out.println(textoVermelho + "\t\tO FUNCIONÁRIO QUE DESEJA DESBLOQUEAR, JÁ SE ENCONTRA NESSE ESTADO. \n\t\tNENHUMA ALTERAÇÃO EFETUADA" + textoNormal);
+                            break;
+                        }
+                    }else{
+
+                        if (op==0){
+                            escolha="1";
+                        }else{
+                            escolha="0";
+                        }
+                        funcionarios.set(i, nifF + ":" + existeF.get(i).getNifEmpresa() + ":" + escolha);
+
+                        FileWriter file = new FileWriter("funcionarios.dat", false);
+                        Formatter formatter = new Formatter(file);
+                        for(int w = 0; w < funcionarios.size(); w ++) {
+                            formatter.format((String) funcionarios.get(w) + "\n");
+                            formatter.flush();
+                        }
+                        formatter.close();
+
+                        System.out.println(System.lineSeparator().repeat(2));
+                        System.out.println(textoVerde + "\t\tA INFORMAÇÃO SÓ FICA VÁLIDA APÓS RENICIAR" + textoNormal);
+
+                    }
+                    count++;
+                }
+            }
+            if(count==0){
+                System.out.println(textoVermelho + "\t\t NÃO EXISTEM FUNCIONÁRIOS REGISTADOS COM O CÓDIGO QUE INDICOU!" + textoNormal);
+            }
+        }
     }
 
     /*

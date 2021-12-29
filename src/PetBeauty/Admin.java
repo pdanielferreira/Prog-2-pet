@@ -42,9 +42,9 @@ public class Admin extends Utilizador {
             System.out.println("\t\t1 - VER PERFIL");
             System.out.println("\t\t2 - EDITAR PERFIL");
             System.out.println("\t\t3 - LISTAR EMPRESAS");
-            System.out.println("\t\t4 - BLOQUEAR EMPRESAS");
+            System.out.println("\t\t4 - BLOQUEAR/DESBLOQUEAR EMPRESAS");
             System.out.println("\t\t5 - VER FUNCIONÁRIOS");
-            System.out.println("\t\t6 - BLOQUEAR FUNCIONÁRIOS");
+            System.out.println("\t\t6 - DESATIVAR/ATIVAR FUNCIONÁRIOS");
             System.out.println("\t\t7 - VER CONSULTAS AGENDADAS");
             System.out.println("\t\t8 - VER ADMIN");
             System.out.println("\t\t9 - REGISTAR ADMIN \n");
@@ -83,26 +83,29 @@ public class Admin extends Utilizador {
                 }
 
                 /*
-                    ADICIONA NOVAS EMPRESAS
+                    BLOQUEAR/DESBLOQUEAR EMPRESAS
                  */
                 case 4:{
-                    e.RegistarNovaEmpresa(getNIF());
+                    int opB=0;
+                    do{
+                        System.out.println(System.lineSeparator().repeat(3));
+                        System.out.println(textoAmarelo + "\t-------------- OPCÇÕES --------------");
+                        System.out.println("\t\t1 - BLOQUEAR EMPRESA");
+                        System.out.println("\t\t2 - DESBLOQUEAR EMPRESA");
+
+                        System.out.print("Escolha uma opção: ");
+                        opB = sc.nextInt()-1;
+                    }while(opB<0 || opB>1);
+
+                    e.bloquearEmpresas(opB);
+
                     break;
                 }
                 /*
                     VER TODOS OS FUNCIONÁRIOS DA EMPRESA
                  */
                 case 5:{
-                    e.listarEmpresas(getNIF());
-
-                    //ENTRA NO MODO ADICIONA FUNCIONARIO
-                    System.out.println(System.lineSeparator().repeat(1));
-                    System.out.print( textoRoxo + "INDIQUE O CÓDIGO DA EMPRESA A QUAL DESEJA VER OS FUNCIONÁRIOS: ");
-                    int valor = sc.nextInt();
-                    System.out.print(textoNormal);
-
-                    e.lerFuncEmp(valor);
-
+                    e.lerTodosFuncEmp();
                     break;
                 }
 
@@ -110,26 +113,18 @@ public class Admin extends Utilizador {
                     ADICIONAR NOVOS FUNCIONÁRIOS
                  */
                 case 6:{
-                    //LISTA TODAS AS EMPRESAS EXISTENTES
-                    e.listarEmpresas(getNIF());
+                    int opB=0;
+                    do{
+                        System.out.println(System.lineSeparator().repeat(3));
+                        System.out.println(textoAmarelo + "\t-------------- OPCÇÕES --------------");
+                        System.out.println("\t\t1 - BLOQUEAR FUNCIONÁRIO");
+                        System.out.println("\t\t2 - DESBLOQUEAR FUNCIOPNÁRIO");
 
-                    //ENTRA NO MODO ADICIONA FUNCIONARIO
-                    String nifFuncionario;
-                    do {
-                        System.out.println(System.lineSeparator().repeat(1));
-                        System.out.print( textoRoxo + "INDIQUE O CÓDIGO DA EMPRESA A QUAL DESEJA ASSOCIAR UM FUNCIONÁRIO: ");
-                        int valor = sc.nextInt();
-                        System.out.print(textoNormal);
+                        System.out.print("Escolha uma opção: ");
+                        opB = sc.nextInt()-1;
+                    }while(opB<0 || opB>1);
 
-                        nifFuncionario = f.registarFuncionario();
-
-                        if (!nifFuncionario.equals("1")){
-                            e.associarFuncEmpresa(nifFuncionario, valor);
-                        }else{
-                            System.out.println(textoVermelho + "OCORREU UM ERRO!! " + textoNormal);
-                        }
-                    }while (nifFuncionario.equals("1"));        //RETORNA, RETORNA ERRO
-
+                    e.bloquearFunc(opB);
                     break;
                 }
                 /*
@@ -140,7 +135,7 @@ public class Admin extends Utilizador {
                     break;
                 }
                 /*
-                    MOTRA TODOS OIS ADMINS REGISTADOS
+                    MOTRA TODOS OS ADMINS REGISTADOS
                  */
                 case 8:{
                     f.listarA();

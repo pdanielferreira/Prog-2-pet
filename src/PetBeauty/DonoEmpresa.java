@@ -45,13 +45,14 @@ public class DonoEmpresa extends Utilizador{
             System.out.println("\t\t4 - CRIAR EMPRESAS");
             System.out.println("\t\t5 - VER FUNCIONÁRIOS");
             System.out.println("\t\t6 - CRIAR FUNCIONÁRIOS");
-            System.out.println("\t\t7 - VER CONSULTAS AGENDADAS \n");
+            System.out.println("\t\t7 - DESATIVAR/ATIVAR FUNCIONÁRIOS");
+            System.out.println("\t\t8 - VER CONSULTAS AGENDADAS\n");
             System.out.println("\t\t0 - SAIR" + textoNormal);
 
             do{
                 System.out.print("Escolha uma opção: ");
                 op = sc.nextInt();
-            }while(op < 0 || op > 7);
+            }while(op < 0 || op > 8);
 
 
             switch(op){
@@ -131,24 +132,30 @@ public class DonoEmpresa extends Utilizador{
                     break;
                 }
                 /*
-                    MOTRA TODAS AS CONSULTAS AGENDADAS
+                    BLOQUEIA/DESBLOQUEIA FUNCIONÁRIO
                  */
                 case 7:{
-                    //LISTA TODAS AS EMPRESAS EXISTENTES
-                    e.listarEmpresas(getNIF());
+                    int opB=0;
+                    do{
+                        System.out.println(System.lineSeparator().repeat(3));
+                        System.out.println(textoAmarelo + "\t-------------- OPCÇÕES --------------");
+                        System.out.println("\t\t1 - BLOQUEAR FUNCIONÁRIO");
+                        System.out.println("\t\t2 - DESBLOQUEAR FUNCIOPNÁRIO");
 
-                    //ENTRA NO MODO ADICIONA FUNCIONARIO
-                    String nifFuncionario;
-                    do {
-                        System.out.println(System.lineSeparator().repeat(1));
-                        System.out.print( textoRoxo + "INDIQUE O CÓDIGO DA EMPRESA A QUAL DESEJA ASSOCIAR UM FUNCIONÁRIO: ");
-                        int valor = sc.nextInt();
-                        System.out.print(textoNormal);
+                        System.out.print("Escolha uma opção: ");
+                        opB = sc.nextInt()-1;
+                    }while(opB<0 || opB>1);
 
-                        nifFuncionario = f.registarFuncionario();
+                    e.bloquearFuncDonoE(opB, getNIF());
+                    break;
+                }
 
-                    }while (nifFuncionario.equals("1"));        //RETORNA, RETORNA ERRO
-
+                /*
+                    MOTRA TODAS AS CONSULTAS AGENDADAS
+                 */
+                case 8:{
+                    //LISTA TODAS AS CONSULTAS EXISTENTES AINDA SEM ATENDIMENTO
+                    m.mostrarConsultasAgendadasE(getNIF());
                     break;
                 }
                 default:{

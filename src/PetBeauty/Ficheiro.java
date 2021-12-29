@@ -520,7 +520,7 @@ public class Ficheiro {
     }
 
     /*
-       LER REGISTO PELO NIF
+       LER REGISTO
     */
     public void listarU() throws FileNotFoundException {
         String textoVermelho = "\033[31m";
@@ -548,6 +548,18 @@ public class Ficheiro {
         for(int i=0; i<existeU.size(); i++){
             if(existeU.get(i).getNIF().equals(nif)){
                 return existeU.get(i).getPrimeiroNome() + " " + existeU.get(i).getApelido();
+            }
+        }
+        return null;
+    }
+
+    /*
+       RETORNA O NIF ATRAVEZ DA OPCÇÃO DE UTILIZADOR
+    */
+    public String devolveNIF(int op) throws FileNotFoundException {
+        for(int i=0; i<existeU.size(); i++){
+            if(i==op){
+                return existeU.get(i).getNIF();
             }
         }
         return null;
