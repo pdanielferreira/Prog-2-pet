@@ -18,4 +18,4 @@
  
  <br><br><br>
  
- <h4>LINK PARA O RELATÓRIO DO PROJETO: </h4><a target="_blank" href="https://www.canva.com/folder/all-designs">Clique Aqui!</a> 
+ <h4>LINK PARA O RELATÓRIO DO PROJETO: </h4><a target="_blank" href="#">Clique Aqui!</a> 
