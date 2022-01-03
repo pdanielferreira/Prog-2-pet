@@ -705,4 +705,300 @@ public class Empresas {
         }
         return null;
     }
+
+    /*
+        PERMITE EDITAR UMA EMPRESA
+     */
+    public void editarEmpresa(String nifD) throws IOException {
+        Scanner sc = new Scanner(System.in);
+        Scanner scn = new Scanner(System.in);
+        int codER, count=0, codE;
+        String textoVermelho = "\033[31m";
+        String textoVerde = "\033[32m";
+        String textoAmarelo = "\033[93m";
+        String textoRoxo = "\033[95m";
+        String textoNormal = "\033[0m";
+        String nome;
+        int esc=0;
+
+
+        for (int x=0; x<existeE.size(); x++){
+            empresas.add(existeE.get(x));
+        }
+
+        System.out.print(textoRoxo + "\n\tDESEJA ALTERAR EDITAR UMA DAS SUAS EMPRESAS [S/N]: " + textoNormal);
+        String resp = sc.nextLine();
+
+        if (resp.equalsIgnoreCase("S")) {
+            listarEmpresas(nifD);
+            do {
+                System.out.print("INSIRA O CÓDIGO DA EMPRESA A SER EDITADA: ");
+                codE = sc.nextInt();
+            }while(existeE.size()>codE && existeE.size()<codE);
+
+            System.out.println("\n\tQUAL O CAMPO A ALTERAR: ");
+            System.out.println("\t\t1 - NOME");
+            System.out.println("\t\t2 - MORADA");
+            System.out.println("\t\t3 - LOCALIDADE");
+            System.out.println("\t\t4 - NÚMERO DE TELEMÓVEL");
+            System.out.println("\t\t5 - ESPECIADLIDADE");
+
+            do {
+                System.out.print("\tSELECIONE O CAMPO: ");
+                esc = sc.nextInt();
+            } while (esc < 0 || esc > 5);
+
+            switch (esc) {
+                //NOME EMPRESA
+                case 1:{
+                    System.out.print(textoRoxo + codE +"\tNOVO NOME: " + textoNormal);
+                    nome = scn.nextLine();
+
+                    for(int i=0; i<existeE.size(); i++) {
+                        if (i==codE){
+                            String nifE = existeE.get(i).getNifEmpresa();
+                            String morada  = existeE.get(i).getMorada();
+                            String localidade  = existeE.get(i).getLocalidade();
+                            String especialidade  = existeE.get(i).getEspecialidade();
+                            String nTel  = existeE.get(i).getnTel();
+                            String nifDono  = existeE.get(i).getNifDono();
+                            String ativo  = existeE.get(i).getAtivo();
+
+                            empresas.set(i, nifE + ":" + nome + ":" + morada + ":" + localidade + ":" + especialidade + ":" + nTel + ":" + nifDono + ":" + ativo);
+
+                        }else{
+                            String nifE = existeE.get(i).getNifEmpresa();
+                            String morada  = existeE.get(i).getMorada();
+                            String localidade  = existeE.get(i).getLocalidade();
+                            String especialidade  = existeE.get(i).getEspecialidade();
+                            String nTel  = existeE.get(i).getnTel();
+                            String nifDono  = existeE.get(i).getNifDono();
+                            String ativo  = existeE.get(i).getAtivo();
+                            String nomeEmpresa  = existeE.get(i).getNome();
+
+                            empresas.set(i, nifE + ":" + nomeEmpresa + ":" + morada + ":" + localidade + ":" + especialidade + ":" + nTel + ":" + nifDono + ":" + ativo);
+
+                        }
+                    }
+
+                    FileWriter file = new FileWriter("empresas.dat", false);
+                    Formatter formatter = new Formatter(file);
+                    for(int w = 0; w < empresas.size(); w ++) {
+                        formatter.format((String) empresas.get(w) + "\n");
+                        formatter.flush();
+                    }
+                    formatter.close();
+
+                    System.out.println(System.lineSeparator().repeat(2));
+                    System.out.println(textoVerde + "\t\tA INFORMAÇÃO SÓ FICA VÁLIDA APÓS RENICIAR" + textoNormal);
+
+                    break;
+                }
+
+                //MORADA
+                case 2:{
+                    System.out.print(textoRoxo + "\tNOVA MORADA: " + textoNormal);
+                    nome = scn.nextLine();
+
+                    for(int i=0; i<existeE.size(); i++) {
+                        if (i==codE){
+
+                            String nifE = existeE.get(i).getNifEmpresa();
+                            String nomeE = existeE.get(i).getNome();
+                            String localidade  = existeE.get(i).getLocalidade();
+                            String especialidade  = existeE.get(i).getEspecialidade();
+                            String nTel  = existeE.get(i).getnTel();
+                            String nifDono  = existeE.get(i).getNifDono();
+                            String ativo  = existeE.get(i).getAtivo();
+
+                            empresas.set(i, nifE + ":" + nomeE + ":" + nome + ":" + localidade + ":" + especialidade + ":" + nTel + ":" + nifDono + ":" + ativo);
+
+                        }else{
+                            String nifE = existeE.get(i).getNifEmpresa();
+                            String morada  = existeE.get(i).getMorada();
+                            String localidade  = existeE.get(i).getLocalidade();
+                            String especialidade  = existeE.get(i).getEspecialidade();
+                            String nTel  = existeE.get(i).getnTel();
+                            String nifDono  = existeE.get(i).getNifDono();
+                            String ativo  = existeE.get(i).getAtivo();
+                            String nomeEmpresa  = existeE.get(i).getNome();
+
+                            empresas.set(i, nifE + ":" + nomeEmpresa + ":" + morada + ":" + localidade + ":" + especialidade + ":" + nTel + ":" + nifDono + ":" + ativo);
+
+                        }
+                    }
+
+                    FileWriter file = new FileWriter("empresas.dat", false);
+                    Formatter formatter = new Formatter(file);
+                    for(int w = 0; w < empresas.size(); w ++) {
+                        formatter.format((String) empresas.get(w) + "\n");
+                        formatter.flush();
+                    }
+                    formatter.close();
+
+                    System.out.println(System.lineSeparator().repeat(2));
+                    System.out.println(textoVerde + "\t\tA INFORMAÇÃO SÓ FICA VÁLIDA APÓS RENICIAR" + textoNormal);
+
+
+                    break;
+                }
+
+
+                //LOCALIDADE
+                case 3:{
+                    System.out.print(textoRoxo + "\tNOVA LOCALIDADE: " + textoNormal);
+                    nome = scn.nextLine();
+
+                    for(int i=0; i<existeE.size(); i++) {
+                        if (i==codE){
+                            String nifE = existeE.get(i).getNifEmpresa();
+                            String nomeE = existeE.get(i).getNome();
+                            String morada  = existeE.get(i).getMorada();
+                            String especialidade  = existeE.get(i).getEspecialidade();
+                            String nTel  = existeE.get(i).getnTel();
+                            String nifDono  = existeE.get(i).getNifDono();
+                            String ativo  = existeE.get(i).getAtivo();
+
+                            empresas.set(i, nifE + ":" + nomeE + ":" + morada + ":" + nome + ":" + especialidade + ":" + nTel + ":" + nifDono + ":" + ativo);
+
+                        }else{
+                            String nifE = existeE.get(i).getNifEmpresa();
+                            String morada  = existeE.get(i).getMorada();
+                            String localidade  = existeE.get(i).getLocalidade();
+                            String especialidade  = existeE.get(i).getEspecialidade();
+                            String nTel  = existeE.get(i).getnTel();
+                            String nifDono  = existeE.get(i).getNifDono();
+                            String ativo  = existeE.get(i).getAtivo();
+                            String nomeEmpresa  = existeE.get(i).getNome();
+
+                            empresas.set(i, nifE + ":" + nomeEmpresa + ":" + morada + ":" + localidade + ":" + especialidade + ":" + nTel + ":" + nifDono + ":" + ativo);
+
+                        }
+                    }
+
+                    FileWriter file = new FileWriter("empresas.dat", false);
+                    Formatter formatter = new Formatter(file);
+                    for(int w = 0; w < empresas.size(); w ++) {
+                        formatter.format((String) empresas.get(w) + "\n");
+                        formatter.flush();
+                    }
+                    formatter.close();
+
+                    System.out.println(System.lineSeparator().repeat(2));
+                    System.out.println(textoVerde + "\t\tA INFORMAÇÃO SÓ FICA VÁLIDA APÓS RENICIAR" + textoNormal);
+
+
+                    break;
+                }
+
+
+                //NÚMERO DE TELEMÓVEL
+                case 4:{
+                    int erro2;
+                    do {
+                        System.out.print("NÚMERO DE TELEMÓVEL: ");
+                        nome = scn.nextLine();
+
+                        if (nome.length()>9 || nome.length()<9){
+                            System.out.println(textoVermelho + "\t\tNÚMERO DE TELEMÓVEL INVÁLIDO!" + textoNormal);
+                            erro2=1;
+                        }else{
+                            erro2=0;
+                        }
+
+                    }while(erro2==1);
+                    System.out.println(textoVerde + "\t\tNÚMERO DE TELEMÓVEL VÁLIDO!" + textoNormal);
+
+                    for(int i=0; i<existeE.size(); i++) {
+                        if (i==codE){
+                            String nifE = existeE.get(i).getNifEmpresa();
+                            String nomeE = existeE.get(i).getNome();
+                            String morada  = existeE.get(i).getMorada();
+                            String especialidade  = existeE.get(i).getEspecialidade();
+                            String localidade  = existeE.get(i).getLocalidade();
+                            String nifDono  = existeE.get(i).getNifDono();
+                            String ativo  = existeE.get(i).getAtivo();
+
+                            empresas.set(i, nifE + ":" + nomeE + ":" + morada + ":" + localidade + ":" + especialidade + ":" + nome + ":" + nifDono + ":" + ativo);
+
+                        }else{
+                            String nifE = existeE.get(i).getNifEmpresa();
+                            String morada  = existeE.get(i).getMorada();
+                            String localidade  = existeE.get(i).getLocalidade();
+                            String especialidade  = existeE.get(i).getEspecialidade();
+                            String nTel  = existeE.get(i).getnTel();
+                            String nifDono  = existeE.get(i).getNifDono();
+                            String ativo  = existeE.get(i).getAtivo();
+                            String nomeEmpresa  = existeE.get(i).getNome();
+
+                            empresas.set(i, nifE + ":" + nomeEmpresa + ":" + morada + ":" + localidade + ":" + especialidade + ":" + nTel + ":" + nifDono + ":" + ativo);
+
+                        }
+                    }
+
+                    FileWriter file = new FileWriter("empresas.dat", false);
+                    Formatter formatter = new Formatter(file);
+                    for(int w = 0; w < empresas.size(); w ++) {
+                        formatter.format((String) empresas.get(w) + "\n");
+                        formatter.flush();
+                    }
+                    formatter.close();
+
+                    System.out.println(System.lineSeparator().repeat(2));
+                    System.out.println(textoVerde + "\t\tA INFORMAÇÃO SÓ FICA VÁLIDA APÓS RENICIAR" + textoNormal);
+
+                    break;
+                }
+
+
+                //ESPECIALIDADE
+                case 5:{
+                    System.out.print(textoRoxo + "\tNOVA ESPECIALIDADE: " + textoNormal);
+                    nome = scn.nextLine();
+
+                    for(int i=0; i<existeE.size(); i++) {
+                        if (i==codE){
+                            String nifE = existeE.get(i).getNifEmpresa();
+                            String nomeE = existeE.get(i).getNome();
+                            String morada  = existeE.get(i).getMorada();
+                            String nTele  = existeE.get(i).getnTel();
+                            String localidade  = existeE.get(i).getLocalidade();
+                            String nifDono  = existeE.get(i).getNifDono();
+                            String ativo  = existeE.get(i).getAtivo();
+
+                            empresas.set(i, nifE + ":" + nomeE + ":" + morada + ":" + localidade + ":" + nome + ":" + nTele + ":" + nifDono + ":" + ativo);
+
+
+                        }else{
+                            String nifE = existeE.get(i).getNifEmpresa();
+                            String morada  = existeE.get(i).getMorada();
+                            String localidade  = existeE.get(i).getLocalidade();
+                            String especialidade  = existeE.get(i).getEspecialidade();
+                            String nTel  = existeE.get(i).getnTel();
+                            String nifDono  = existeE.get(i).getNifDono();
+                            String ativo  = existeE.get(i).getAtivo();
+                            String nomeEmpresa  = existeE.get(i).getNome();
+
+                            empresas.set(i, nifE + ":" + nomeEmpresa + ":" + morada + ":" + localidade + ":" + especialidade + ":" + nTel + ":" + nifDono + ":" + ativo);
+
+                        }
+                    }
+
+                    FileWriter file = new FileWriter("empresas.dat", false);
+                    Formatter formatter = new Formatter(file);
+                    for(int w = 0; w < empresas.size(); w ++) {
+                        formatter.format((String) empresas.get(w) + "\n");
+                        formatter.flush();
+                    }
+                    formatter.close();
+
+                    System.out.println(System.lineSeparator().repeat(2));
+                    System.out.println(textoVerde + "\t\tA INFORMAÇÃO SÓ FICA VÁLIDA APÓS RENICIAR" + textoNormal);
+                    
+                    break;
+                }
+            }
+
+        }
+    }
 }

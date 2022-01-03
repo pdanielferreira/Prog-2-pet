@@ -43,16 +43,17 @@ public class DonoEmpresa extends Utilizador{
             System.out.println("\t\t2 - EDITAR PERFIL");
             System.out.println("\t\t3 - VER EMPRESAS");
             System.out.println("\t\t4 - CRIAR EMPRESAS");
-            System.out.println("\t\t5 - VER FUNCIONÁRIOS");
-            System.out.println("\t\t6 - CRIAR FUNCIONÁRIOS");
-            System.out.println("\t\t7 - DESATIVAR/ATIVAR FUNCIONÁRIOS");
-            System.out.println("\t\t8 - VER CONSULTAS AGENDADAS\n");
+            System.out.println("\t\t5 - EDITAR EMPRESAS");
+            System.out.println("\t\t6 - VER FUNCIONÁRIOS");
+            System.out.println("\t\t7 - CRIAR FUNCIONÁRIOS");
+            System.out.println("\t\t8 - DESATIVAR/ATIVAR FUNCIONÁRIOS");
+            System.out.println("\t\t9 - VER CONSULTAS AGENDADAS\n");
             System.out.println("\t\t0 - SAIR" + textoNormal);
 
             do{
                 System.out.print("Escolha uma opção: ");
                 op = sc.nextInt();
-            }while(op < 0 || op > 8);
+            }while(op < 0 || op > 9);
 
 
             switch(op){
@@ -89,9 +90,16 @@ public class DonoEmpresa extends Utilizador{
                     break;
                 }
                 /*
-                    VER TODOS OS FUNCIONÁRIOS DA EMPRESA
+                    EDITA EMPRESAS
                  */
                 case 5:{
+                    e.editarEmpresa(getNIF());
+                    break;
+                }
+                /*
+                    VER TODOS OS FUNCIONÁRIOS DA EMPRESA
+                 */
+                case 6:{
                     e.listarEmpresas(getNIF());
 
                     //ENTRA NO MODO ADICIONA FUNCIONARIO
@@ -108,7 +116,7 @@ public class DonoEmpresa extends Utilizador{
                 /*
                     ADICIONAR NOVOS FUNCIONÁRIOS
                  */
-                case 6:{
+                case 7:{
                     //LISTA TODAS AS EMPRESAS EXISTENTES
                     e.listarEmpresas(getNIF());
 
@@ -134,7 +142,7 @@ public class DonoEmpresa extends Utilizador{
                 /*
                     BLOQUEIA/DESBLOQUEIA FUNCIONÁRIO
                  */
-                case 7:{
+                case 8:{
                     int opB=0;
                     do{
                         System.out.println(System.lineSeparator().repeat(3));
@@ -153,7 +161,7 @@ public class DonoEmpresa extends Utilizador{
                 /*
                     MOTRA TODAS AS CONSULTAS AGENDADAS
                  */
-                case 8:{
+                case 9:{
                     //LISTA TODAS AS CONSULTAS EXISTENTES AINDA SEM ATENDIMENTO
                     m.mostrarConsultasAgendadasE(getNIF());
                     break;
