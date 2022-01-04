@@ -18,4 +18,5 @@
  
  <br><br><br>
  
- <h4>LINK PARA O RELATÓRIO DO PROJETO: </h4><a target="_blank" href="#">Clique Aqui!</a> 
+ <h4>LINK PARA O RELATÓRIO DO PROJETO: </h4><a target="_blank" href="https://drive.google.com/file/d/1q_D9y6O5gKg54xSl5juOoZg1yPgCysCb/view?usp=sharing">Clique Aqui!</a> 
+ <h4>LINK PARA O MANUAL DE UTILIZADOR DO PROJETO: </h4><a target="_blank" href="https://drive.google.com/file/d/1gRJA-PAy3yCdXXe7IX_P4N5TUyK-X2Xm/view?usp=sharing">Clique Aqui!</a> 
