@@ -695,7 +695,7 @@ public class Empresas {
     }
 
     /*
-        DEVOLVER NOME DA EMPRESA PELO NIF
+        DEVOLVER NOME DA EMPRESA PELO NIF DA EMPRESA
      */
     public String devolverNomeEmp(String nif){
         for (int i=0; i<existeE.size(); i++){
@@ -994,7 +994,7 @@ public class Empresas {
 
                     System.out.println(System.lineSeparator().repeat(2));
                     System.out.println(textoVerde + "\t\tA INFORMAÇÃO SÓ FICA VÁLIDA APÓS RENICIAR" + textoNormal);
-                    
+
                     break;
                 }
             }
